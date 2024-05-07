@@ -8,7 +8,6 @@ public class Movement : MonoBehaviour
     private Animator animator;
     private Transform physicalBody;
 
-
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -28,6 +27,12 @@ public class Movement : MonoBehaviour
 
         // Set the "speed" parameter of the Animator based on the magnitude of the movement direction
         animator.SetFloat("Speed", moveDirection.magnitude);
+
+        // Rotate the physical body based on the movement direction
+        if (moveDirection != Vector3.zero)
+        {
+            physicalBody.rotation = Quaternion.LookRotation(moveDirection);
+        }
     }
 
     void FixedUpdate()
