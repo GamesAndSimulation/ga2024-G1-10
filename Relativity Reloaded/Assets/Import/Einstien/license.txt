@@ -1,0 +1,11 @@
+Model Information:
+* title:	Einstien
+* source:	https://sketchfab.com/3d-models/einstien-b4d4bbe2dad542ce98c449c232c07743
+* author:	cool guy (https://sketchfab.com/engantogs)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Einstien" (https://sketchfab.com/3d-models/einstien-b4d4bbe2dad542ce98c449c232c07743) by cool guy (https://sketchfab.com/engantogs) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
