@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 288022974}
   m_Layer: 0
   m_Name: Terrain_(-1000.00, 0.00, -1000.00)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -221,7 +221,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1982861501}
+    m_TransformParent: {fileID: 1089582142}
     m_Modifications:
     - target: {fileID: 2686890238580842728, guid: 4a076a09e2096f140b4008b73dea295f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -229,11 +229,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2686890238580842728, guid: 4a076a09e2096f140b4008b73dea295f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.6900003
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2686890238580842728, guid: 4a076a09e2096f140b4008b73dea295f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.1000001
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2686890238580842728, guid: 4a076a09e2096f140b4008b73dea295f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -294,7 +294,7 @@ GameObject:
   - component: {fileID: 852504019}
   m_Layer: 0
   m_Name: Terrain_(-1000.00, 0.00, 0.00)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -511,7 +511,8 @@ Transform:
   m_LocalPosition: {x: 0, y: -1.6900003, z: 3.1000001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 682479880}
   m_Father: {fileID: 1982861501}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1089582143
@@ -575,6 +576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  jumpForce: 10
 --- !u!1 &1090289808
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,7 +590,7 @@ GameObject:
   - component: {fileID: 1090289810}
   m_Layer: 0
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -680,7 +682,7 @@ GameObject:
   - component: {fileID: 1430969385}
   m_Layer: 0
   m_Name: Terrain_(0.00, 0.00, -1000.00)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -919,7 +921,6 @@ Transform:
   m_Children:
   - {fileID: 890284859}
   - {fileID: 1089582142}
-  - {fileID: 682479880}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
