@@ -47,6 +47,11 @@ public class Movement : MonoBehaviour
         }
     }
 
+    private bool IsFalling()
+    {
+        return _rb.velocity.y < 0 && !isJumping;
+    }
+
     private void HandleMovementInput()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -77,6 +82,7 @@ public class Movement : MonoBehaviour
     private void UpdateAnimatorParameters()
     {
         _animator.SetFloat(Speed, _moveDirection.magnitude);
+        _animator.SetBool("Falling", IsFalling());
     }
 
     private void HandleCollision(Collision collision)
