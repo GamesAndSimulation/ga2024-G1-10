@@ -465,8 +465,8 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Bip02_L_Foot
       parentName: Bip02_L_Leg1
-      position: {x: 0.16438499, y: 0.022590129, z: 0.003880332}
-      rotation: {x: -0.99202806, y: -0.0033475896, z: -0.03187562, w: 0.12187348}
+      position: {x: 0.16438496, y: 0.022589976, z: 0.0038804035}
+      rotation: {x: -0.03096719, y: 0.02922761, z: -0.0003134231, w: -0.99909294}
       scale: {x: 0.99999994, y: 1, z: 0.99999994}
     - name: Bip02_L_Foot_end
       parentName: Bip02_L_Foot
@@ -485,8 +485,8 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Bip02_R_Foot
       parentName: Bip02_R_Leg1
-      position: {x: 0.16423717, y: 0.02314927, z: -0.0061664665}
-      rotation: {x: 0.35147327, y: 0.11635388, z: 0.9282255, w: 0.036410186}
+      position: {x: 0.16423716, y: 0.02314926, z: -0.006166444}
+      rotation: {x: 0.012044137, y: 0.95063907, z: 0.09220425, w: 0.2960384}
       scale: {x: 1, y: 1, z: 1}
     - name: Bip02_R_Foot_end
       parentName: Bip02_R_Foot
@@ -530,8 +530,8 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Bip02_L_Hand
       parentName: Bip02_L_Arm2
-      position: {x: -0.107360475, y: -0.021763086, z: -0.00000021934508}
-      rotation: {x: -0.19752619, y: 0.9738788, z: 0.021188281, w: 0.109975286}
+      position: {x: -0.107366174, y: -0.02176078, z: -0.000007714626}
+      rotation: {x: 0.00824487, y: -0.046149004, z: 0.19848871, w: 0.9789814}
       scale: {x: 1, y: 1, z: 1}
     - name: Bip02_L_Hand_end
       parentName: Bip02_L_Hand
@@ -551,12 +551,12 @@ ModelImporter:
     - name: Bip02_R_Arm2
       parentName: Bip02_R_Arm1
       position: {x: -0.109542795, y: 0.00000020489097, z: -0.000000019073486}
-      rotation: {x: 0.0012206145, y: -0.0060213585, z: -0.0615386, w: 0.9980858}
+      rotation: {x: 0.0012206146, y: -0.0060213585, z: -0.061538603, w: 0.9980858}
       scale: {x: 1, y: 1, z: 1}
     - name: Bip02_R_Hand
       parentName: Bip02_R_Arm2
-      position: {x: -0.1073603, y: -0.021762818, z: -0.000000042915342}
-      rotation: {x: 0.1975227, y: -0.97387767, z: 0.021197816, w: 0.10998968}
+      position: {x: -0.10735151, y: -0.021761704, z: 0.0000027316892}
+      rotation: {x: 0.012160062, y: -0.0654235, z: -0.19828445, w: -0.97788304}
       scale: {x: 0.99999994, y: 1, z: 0.99999994}
     - name: Bip02_R_Hand_end
       parentName: Bip02_R_Hand
@@ -7101,7 +7101,7 @@ ModelImporter:
     - name: MCH-f_index.02_drv.L
       parentName: f_index.01.L
       position: {x: -7.4505804e-11, y: 0.00045039976, z: -5.0291415e-10}
-      rotation: {x: 0.077544816, y: 0.00056557235, z: -0.0072525283, w: 0.9969623}
+      rotation: {x: 0.07754482, y: 0.00056557235, z: -0.007252529, w: 0.9969623}
       scale: {x: 1, y: 1, z: 1}
     - name: f_index.02.L
       parentName: MCH-f_index.02_drv.L

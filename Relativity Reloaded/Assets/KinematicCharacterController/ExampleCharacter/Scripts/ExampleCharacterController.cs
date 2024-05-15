@@ -380,6 +380,7 @@ namespace KinematicCharacterController.Examples
 
                                 // Add to the return velocity and reset jump state
                                 currentVelocity += (jumpDirection * JumpUpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+
                                 currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
                                 _jumpRequested = false;
                                 _jumpConsumed = true;
