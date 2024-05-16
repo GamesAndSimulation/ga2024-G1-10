@@ -8,7 +8,7 @@ public class Pursuer : MonoBehaviour
     public float speed = 2f;
     public float rotationSpeed = 200f;
     public float triggerRadius = 10f; // Trigger radius
-    public float attackRadius = 1f; // Attack radius
+    private float attackRadius = 1f; // Attack radius
 
 
 
@@ -17,12 +17,22 @@ public class Pursuer : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         Vector3 direction = player.position - transform.position;
+        float distance = direction.magnitude;
 
-        if (direction.magnitude <= triggerRadius && !isPlayerAttackable(direction))
+        if (distance <= attackRadius)
         {
+            // Can attack
+            animator.SetBool("canAttack", true);
+            animator.SetBool("isMovingHorizontally", false);
+            // Stop movement
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+        }
+        else if (distance <= triggerRadius)
+        {
+            // Can move towards player
             direction.Normalize();
 
             Quaternion toRotation = Quaternion.LookRotation(direction);
@@ -30,18 +40,18 @@ public class Pursuer : MonoBehaviour
 
             transform.position += direction * speed * Time.deltaTime;
 
-            animator.SetBool("isPlayerAttackable", false);
-            Debug.Log("Player is not attackable");
+            animator.SetBool("isMovingHorizontally", true);
+            animator.SetBool("canAttack", false);
         }
-        else if (isPlayerAttackable(direction))
+        else
         {
-            animator.SetBool("isPlayerAttackable", true);
-            Debug.Log("Player is attackable");
+            // Player is out of range
+            animator.SetBool("isMovingHorizontally", false);
+            animator.SetBool("canAttack", false);
         }
-
     }
 
-    bool isPlayerAttackable(Vector3 distance)
+    bool canAttack(Vector3 distance)
     {
         return distance.magnitude <= attackRadius;
     }
