@@ -1,7 +1,5 @@
 using UnityEngine;
 
-using UnityEngine;
-
 public class Bullet : MonoBehaviour
 {
     public float lifetime = 5f; // Lifetime of the bullet in seconds
