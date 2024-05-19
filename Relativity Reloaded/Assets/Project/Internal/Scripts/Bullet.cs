@@ -1,17 +1,20 @@
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+namespace Project.Internal.Scripts
 {
-    public float lifetime = 5f; // Lifetime of the bullet in seconds
-
-    void Start()
+    public class Bullet : MonoBehaviour
     {
-        Destroy(gameObject, lifetime);
-    }
+        public float lifetime = 5f; // Lifetime of the bullet in seconds
 
-    void OnCollisionEnter(Collision collision)
-    {
-        // Handle bullet collision here
-        Destroy(gameObject);
+        void Start()
+        {
+            Destroy(gameObject, lifetime);
+        }
+
+        void OnCollisionEnter(Collision collision)
+        {
+            // Handle bullet collision here
+            Destroy(gameObject);
+        }
     }
 }

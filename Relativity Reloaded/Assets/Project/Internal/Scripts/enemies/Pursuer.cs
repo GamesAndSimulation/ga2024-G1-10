@@ -1,59 +1,62 @@
 using UnityEngine;
 
-public class Pursuer : MonoBehaviour
+namespace Project.Internal.Scripts.enemies
 {
-    public Transform player;
-    public Animator animator;
-
-    public float speed = 2f;
-    public float rotationSpeed = 200f;
-    public float triggerRadius = 10f; // Trigger radius
-    private float attackRadius = 1f; // Attack radius
-
-
-
-    void Start()
+    public class Pursuer : MonoBehaviour
     {
-        animator = GetComponent<Animator>();
-    }
+        public Transform player;
+        public Animator animator;
 
-    void FixedUpdate()
-    {
-        Vector3 direction = player.position - transform.position;
-        float distance = direction.magnitude;
+        public float speed = 2f;
+        public float rotationSpeed = 200f;
+        public float triggerRadius = 10f; // Trigger radius
+        private float attackRadius = 1f; // Attack radius
 
-        if (distance <= attackRadius)
+
+
+        void Start()
         {
-            // Can attack
-            animator.SetBool("canAttack", true);
-            animator.SetBool("isMovingHorizontally", false);
-            // Stop movement
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            animator = GetComponent<Animator>();
         }
-        else if (distance <= triggerRadius)
+
+        void FixedUpdate()
         {
-            // Can move towards player
-            direction.Normalize();
+            Vector3 direction = player.position - transform.position;
+            float distance = direction.magnitude;
 
-            Quaternion toRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, Time.deltaTime * rotationSpeed);
+            if (distance <= attackRadius)
+            {
+                // Can attack
+                animator.SetBool("canAttack", true);
+                animator.SetBool("isMovingHorizontally", false);
+                // Stop movement
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
+            }
+            else if (distance <= triggerRadius)
+            {
+                // Can move towards player
+                direction.Normalize();
 
-            transform.position += direction * speed * Time.deltaTime;
+                Quaternion toRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, Time.deltaTime * rotationSpeed);
 
-            animator.SetBool("isMovingHorizontally", true);
-            animator.SetBool("canAttack", false);
+                transform.position += direction * speed * Time.deltaTime;
+
+                animator.SetBool("isMovingHorizontally", true);
+                animator.SetBool("canAttack", false);
+            }
+            else
+            {
+                // Player is out of range
+                animator.SetBool("isMovingHorizontally", false);
+                animator.SetBool("canAttack", false);
+            }
         }
-        else
+
+        bool canAttack(Vector3 distance)
         {
-            // Player is out of range
-            animator.SetBool("isMovingHorizontally", false);
-            animator.SetBool("canAttack", false);
+            return distance.magnitude <= attackRadius;
         }
-    }
 
-    bool canAttack(Vector3 distance)
-    {
-        return distance.magnitude <= attackRadius;
     }
-
 }

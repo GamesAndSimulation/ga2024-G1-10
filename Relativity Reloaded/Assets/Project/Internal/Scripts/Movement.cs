@@ -1,103 +1,85 @@
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+namespace Project.Internal.Scripts
 {
-    public float speed = 10.0f;
-    public float jumpForce = 2.0f;
-    private Vector3 _moveDirection = Vector3.zero;
-    private Rigidbody _rb;
-    private Animator _animator;
-    private Transform _physicalBody;
-    private Transform _mainCamera;
-    private bool isJumping = false;
-    private static readonly int Speed = Animator.StringToHash("Speed");
-
-    void Start()
+    public class PlayerMovement : MonoBehaviour
     {
-        InitializeComponents();
-    }
+        public float speed = 5f;
+        public float runSpeed = 10f; // Running speed
+        public float rotationSpeed = 700f; // Speed of rotation
+        public float mouseSensitivity = 100f; // Sensitivity of mouse movement for rotation
+        public Animator animator; // Reference to the animator
+        public Transform cameraTransform; // Reference to the camera transform
+        private Transform _physicalBody; // Reference to the PhysicalBody
+        private static readonly int Speed = Animator.StringToHash("Speed");
+        
+        private float _rotationX = 0f; // Rotation around the y-axis
 
-    void Update()
-    {
-        HandleMovementInput();
-        HandleJumpInput();
-        UpdateAnimatorParameters();
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        HandleCollision(collision);
-    }
-
-    void FixedUpdate()
-    {
-        MoveCharacter();
-    }
-
-    private void InitializeComponents()
-    {
-        _rb = GetComponent<Rigidbody>();
-        _physicalBody = transform.Find("PhysicalBody");
-        _animator = _physicalBody.GetComponent<Animator>();
-        if (Camera.main != null) _mainCamera = Camera.main.transform;
-
-        if (_physicalBody == null)
+        void Start()
         {
-            Debug.LogError("Child object 'PhysicalBody' not found");
+            // Retrieve the PhysicalBody
+            _physicalBody = transform.Find("PhysicalBody");
         }
-    }
 
-    private bool IsFalling()
-    {
-        return _rb.velocity.y < 0 && !isJumping;
-    }
-
-    private void HandleMovementInput()
-    {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        Vector3 forward = _mainCamera.forward;
-        Vector3 right = _mainCamera.right;
-
-        forward.y = 0;
-        right.y = 0;
-
-        forward.Normalize();
-        right.Normalize();
-
-        _moveDirection = forward * verticalInput + right * horizontalInput;
-        _moveDirection *= speed;
-    }
-
-    private void HandleJumpInput()
-    {
-        if (Input.GetButtonDown("Jump") && !isJumping)
+        void Update()
         {
-            _rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
-            isJumping = true;
-        }
-    }
+            // Check if the left shift key is being pressed
+            bool isRunning = Input.GetKey(KeyCode.LeftShift);
 
-    private void UpdateAnimatorParameters()
-    {
-        _animator.SetFloat(Speed, _moveDirection.magnitude);
-        _animator.SetBool("Falling", IsFalling());
-    }
+            // Use runSpeed if the player is running, otherwise use speed
+            float currentSpeed = isRunning ? runSpeed : speed;
 
-    private void HandleCollision(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isJumping = false;
-        }
-    }
+            // Move the player forward and backward
+            float moveVertical = Input.GetAxis("Vertical");
+            // Move the player left and right
+            float moveHorizontal = Input.GetAxis("Horizontal");
 
-    private void MoveCharacter()
-    {
-        if (_moveDirection != Vector3.zero)
-        {
-            _rb.MovePosition(_rb.position + _moveDirection * Time.fixedDeltaTime);
+            // Get the camera's forward and right vectors
+            Vector3 forward = cameraTransform.forward;
+            Vector3 right = cameraTransform.right;
+
+            // Project forward and right vectors onto the horizontal plane (y = 0)
+            forward.y = 0;
+            right.y = 0;
+            forward.Normalize();
+            right.Normalize();
+
+            // Combine the movement direction based on camera's orientation
+            Vector3 moveDirection = (forward * moveVertical + right * moveHorizontal).normalized * (currentSpeed * Time.deltaTime);
+
+            // Apply the movement
+            transform.Translate(moveDirection, Space.World);
+
+            // Rotate the PhysicalBody to face the move direction
+            if (moveDirection != Vector3.zero)
+            {
+                Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+                _physicalBody.rotation = Quaternion.Slerp(_physicalBody.rotation, toRotation, rotationSpeed * Time.deltaTime);
+            }
+
+            // Update the animator with the speed
+            if (moveDirection == Vector3.zero)
+            {
+                animator.SetFloat(Speed, 0f);
+            }
+            else if (!isRunning)
+            {
+                animator.SetFloat(Speed, 0.5f);
+            }
+            else
+            {
+                animator.SetFloat(Speed, 1f);
+            }
+
+            // Handle mouse input for rotation
+            if (Input.GetMouseButton(0)) // If the left mouse button is held down
+            {
+                float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+                _rotationX += mouseX;
+
+                // Apply rotation to the player
+                transform.localRotation = Quaternion.Euler(0f, _rotationX, 0f);
+            }
         }
     }
 }
