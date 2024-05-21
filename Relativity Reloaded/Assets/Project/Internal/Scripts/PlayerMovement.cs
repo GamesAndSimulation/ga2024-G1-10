@@ -10,18 +10,21 @@ namespace Project.Internal.Scripts
         public float mouseSensitivity = 100f; // Sensitivity of mouse movement for rotation
         public Animator animator; // Reference to the animator
         public Transform cameraTransform; // Reference to the camera transform
+        private Rigidbody _rigidBody; // Reference to the Rigidbody
         private Transform _physicalBody; // Reference to the PhysicalBody
         private static readonly int Speed = Animator.StringToHash("Speed");
-        
-        private float _rotationX = 0f; // Rotation around the y-axis
+
+        private float _rotationX; // Rotation around the y-axis
+        public Transform PlayerTarget;
 
         void Start()
         {
-            // Retrieve the PhysicalBody
+            // Retrieve the Rigidbody and PhysicalBody
+            _rigidBody = GetComponent<Rigidbody>();
             _physicalBody = transform.Find("PhysicalBody");
         }
 
-        void Update()
+        void FixedUpdate()
         {
             // Check if the left shift key is being pressed
             bool isRunning = Input.GetKey(KeyCode.LeftShift);
@@ -48,7 +51,7 @@ namespace Project.Internal.Scripts
             Vector3 moveDirection = (forward * moveVertical + right * moveHorizontal).normalized * (currentSpeed * Time.deltaTime);
 
             // Apply the movement
-            transform.Translate(moveDirection, Space.World);
+            _rigidBody.MovePosition(_rigidBody.position + moveDirection);
 
             // Rotate the PhysicalBody to face the move direction
             if (moveDirection != Vector3.zero)
@@ -76,9 +79,15 @@ namespace Project.Internal.Scripts
             {
                 float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
                 _rotationX += mouseX;
+                
+                // Apply rotation to the player target
+                PlayerTarget.localRotation = Quaternion.Euler(0f, _rotationX, 0f);
+            }
 
-                // Apply rotation to the player
-                transform.localRotation = Quaternion.Euler(0f, _rotationX, 0f);
+            // Handle jump input
+            if (Input.GetButtonDown("Jump") && _rigidBody.velocity.y == 0)
+            {
+                _rigidBody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
             }
         }
     }
