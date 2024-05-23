@@ -637,7 +637,7 @@ MonoBehaviour:
   speed: 2
   rotationSpeed: 10
   triggerRadius: 10
-  attackRadius: 2
+  attackRadius: 1.4
 --- !u!1 &852504017
 GameObject:
   m_ObjectHideFlags: 0
