@@ -1,7 +1,5 @@
 using UnityEngine;
 
-namespace Project.Internal.Scripts
-{
     public class Bullet : MonoBehaviour
     {
         public float lifetime = 5f; // Lifetime of the bullet in seconds
@@ -26,4 +24,3 @@ namespace Project.Internal.Scripts
             Destroy(gameObject);
         }
     }
-}

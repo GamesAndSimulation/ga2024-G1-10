@@ -1,96 +1,125 @@
 using UnityEngine;
+using Cinemachine;
 
 namespace Project.Internal.Scripts
 {
     public class PlayerMovement : MonoBehaviour
     {
         public float speed = 5f;
-        public float runSpeed = 10f; // Running speed
-        public float rotationSpeed = 700f; // Speed of rotation
-        public float mouseSensitivity = 100f; // Sensitivity of mouse movement for rotation
-        public Animator animator; // Reference to the animator
-        public Transform cameraTransform; // Reference to the camera transform
-        public Transform cameraPivot; // Reference to the camera pivot (an empty GameObject attached to the player)
-        private Rigidbody _rigidBody; // Reference to the Rigidbody
-        private Transform _physicalBody; // Reference to the PhysicalBody
+        public float runSpeed = 10f;
+        public float rotationSpeed = 700f;
+        public float mouseSensitivity = 100f;
+        public Animator animator;
+        public Transform cameraTransform;
+        public Transform cameraPivot;
+        public CinemachineVirtualCamera camera1;
+        public CinemachineVirtualCamera camera2;
+        private Rigidbody _rigidBody;
+        private Transform _physicalBody;
+        private StarterAssets.StarterAssetsInputs _input;
+        private bool _cameraSwitch = false;
         private static readonly int Speed = Animator.StringToHash("Speed");
 
-        private float _rotationX; // Rotation around the y-axis
-        private float _rotationY; // Rotation around the x-axis
+        private float _rotationX;
+        private float _rotationY;
 
         void Start()
         {
-            // Retrieve the Rigidbody and PhysicalBody
-            _rigidBody = GetComponent<Rigidbody>();
+            if (!TryGetComponent<Rigidbody>(out _rigidBody))
+            {
+                Debug.LogError("Rigidbody component missing from the player.");
+                return;
+            }
+
             _physicalBody = transform.Find("PhysicalBody");
-            Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
+            if (_physicalBody == null)
+            {
+                Debug.LogError("PhysicalBody transform missing from the player.");
+                return;
+            }
+
+            Cursor.lockState = CursorLockMode.Locked;
+
+            if (!TryGetComponent<StarterAssets.StarterAssetsInputs>(out _input))
+            {
+                Debug.LogError("StarterAssetsInputs component missing from the player.");
+            }
         }
 
         void FixedUpdate()
         {
-            // Check if the left shift key is being pressed
-            bool isRunning = Input.GetKey(KeyCode.LeftShift);
+            if (_input == null) return;
 
-            // Use runSpeed if the player is running, otherwise use speed
+            Debug.Log("FixedUpdate called");
+            HandleMovement();
+            HandleRotation();
+            HandleJump();
+            HandleCameraSwitch();
+        }
+
+        private void HandleMovement()
+        {
+            bool isRunning = _input.sprint;
             float currentSpeed = isRunning ? runSpeed : speed;
 
-            // Move the player forward and backward
-            float moveVertical = Input.GetAxis("Vertical");
-            // Move the player left and right
-            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = _input.move.y;
+            float moveHorizontal = _input.move.x;
 
-            // Get the camera's forward and right vectors
+            Debug.Log($"Move Input: {moveHorizontal}, {moveVertical}");
+
             Vector3 forward = cameraPivot.forward;
             Vector3 right = cameraPivot.right;
 
-            // Project forward and right vectors onto the horizontal plane (y = 0)
             forward.y = 0;
             right.y = 0;
             forward.Normalize();
             right.Normalize();
 
-            // Combine the movement direction based on camera's orientation
             Vector3 moveDirection = (forward * moveVertical + right * moveHorizontal).normalized * (currentSpeed * Time.deltaTime);
 
-            // Apply the movement
+            Debug.Log($"Move Direction: {moveDirection}");
+
             _rigidBody.MovePosition(_rigidBody.position + moveDirection);
 
-            // Rotate the PhysicalBody to face the move direction
             if (moveDirection != Vector3.zero)
             {
                 Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
                 _physicalBody.rotation = Quaternion.Slerp(_physicalBody.rotation, toRotation, rotationSpeed * Time.deltaTime);
             }
 
-            // Update the animator with the speed
-            if (moveDirection == Vector3.zero)
-            {
-                animator.SetFloat(Speed, 0f);
-            }
-            else if (!isRunning)
-            {
-                animator.SetFloat(Speed, 0.5f);
-            }
-            else
-            {
-                animator.SetFloat(Speed, 1f);
-            }
+            animator.SetFloat(Speed, moveDirection == Vector3.zero ? 0f : (isRunning ? 1f : 0.5f));
+        }
 
-            // Handle mouse input for camera rotation
-            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        private void HandleRotation()
+        {
+            float mouseX = _input.look.x * mouseSensitivity * Time.deltaTime;
+            float mouseY = _input.look.y * mouseSensitivity * Time.deltaTime;
+
+            Debug.Log($"Look Input: {mouseX}, {mouseY}");
 
             _rotationX += mouseX;
             _rotationY -= mouseY;
-            _rotationY = Mathf.Clamp(_rotationY, -90f, 90f); // Clamp the vertical rotation to prevent flipping
+            _rotationY = Mathf.Clamp(_rotationY, -90f, 90f);
 
-            // Apply rotation to the camera pivot
             cameraPivot.localRotation = Quaternion.Euler(_rotationY, _rotationX, 0f);
+        }
 
-            // Handle jump input
-            if (Input.GetButtonDown("Jump") && _rigidBody.velocity.y == 0)
+        private void HandleJump()
+        {
+            if (_input.jump && Mathf.Approximately(_rigidBody.velocity.y, 0))
             {
                 _rigidBody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+            }
+        }
+
+        private void HandleCameraSwitch()
+        {
+            if (_input.switchCamera)
+            {
+                _cameraSwitch = !_cameraSwitch;
+                camera1.gameObject.SetActive(!_cameraSwitch);
+                camera2.gameObject.SetActive(_cameraSwitch);
+                Debug.Log($"Camera switched: {_cameraSwitch}");
             }
         }
     }

@@ -1,7 +1,5 @@
 using UnityEngine;
 
-namespace Project.Internal.Scripts
-{
     public class Shooter : MonoBehaviour
     {
         public float bulletSpeed = 20f;
@@ -36,4 +34,3 @@ namespace Project.Internal.Scripts
             rb.velocity = shootDirection * bulletSpeed;
         }
     }
-}

@@ -17,8 +17,7 @@ public class PlayerStats : CharacterStats
     {
         if (hud == null)
         {
-            hud = GetComponent<PHUD>();
-            if (hud == null)
+            if (!TryGetComponent<PHUD>(out hud))
             {
                 Debug.LogError("PHUD component not found on the same GameObject.");
             }
@@ -35,19 +34,6 @@ public class PlayerStats : CharacterStats
         else
         {
             Debug.LogError("HUD reference is null.");
-        }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            TakeDamage(1);
-        }
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            Heal(1);
         }
     }
 }
