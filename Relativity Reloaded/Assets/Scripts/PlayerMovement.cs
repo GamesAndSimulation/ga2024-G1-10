@@ -1,126 +1,133 @@
 using UnityEngine;
 using Cinemachine;
 
-namespace Project.Internal.Scripts
+public class PlayerMovement : MonoBehaviour
 {
-    public class PlayerMovement : MonoBehaviour
+    public float speed = 5f;
+    public float runSpeed = 10f;
+    public float rotationSpeed = 700f;
+    public float mouseSensitivity = 100f;
+    public Animator animator;
+    public Transform cameraTransform;
+    public Transform cameraPivot;
+    public CinemachineVirtualCamera camera1;
+    public CinemachineVirtualCamera camera2;
+    private Rigidbody _rigidBody;
+    private Transform _physicalBody;
+    private static readonly int Speed = Animator.StringToHash("Speed");
+    private float _rotationX;
+    private float _rotationY;
+    public bool isAiming;
+
+    void Start()
     {
-        public float speed = 5f;
-        public float runSpeed = 10f;
-        public float rotationSpeed = 700f;
-        public float mouseSensitivity = 100f;
-        public Animator animator;
-        public Transform cameraTransform;
-        public Transform cameraPivot;
-        public CinemachineVirtualCamera camera1;
-        public CinemachineVirtualCamera camera2;
-        private Rigidbody _rigidBody;
-        private Transform _physicalBody;
-        private StarterAssets.StarterAssetsInputs _input;
-        private bool _cameraSwitch = false;
-        private static readonly int Speed = Animator.StringToHash("Speed");
-
-        private float _rotationX;
-        private float _rotationY;
-
-        void Start()
+        if (!TryGetComponent<Rigidbody>(out _rigidBody))
         {
-            if (!TryGetComponent<Rigidbody>(out _rigidBody))
-            {
-                Debug.LogError("Rigidbody component missing from the player.");
-                return;
-            }
-
-            _physicalBody = transform.Find("PhysicalBody");
-            if (_physicalBody == null)
-            {
-                Debug.LogError("PhysicalBody transform missing from the player.");
-                return;
-            }
-
-            Cursor.lockState = CursorLockMode.Locked;
-
-            if (!TryGetComponent<StarterAssets.StarterAssetsInputs>(out _input))
-            {
-                Debug.LogError("StarterAssetsInputs component missing from the player.");
-            }
+            Debug.LogError("Rigidbody component missing from the player.");
+            return;
         }
 
-        void FixedUpdate()
+        _physicalBody = transform.Find("PhysicalBody");
+        if (_physicalBody == null)
         {
-            if (_input == null) return;
-
-            Debug.Log("FixedUpdate called");
-            HandleMovement();
-            HandleRotation();
-            HandleJump();
-            HandleCameraSwitch();
+            Debug.LogError("PhysicalBody transform missing from the player.");
+            return;
         }
 
-        private void HandleMovement()
+        Cursor.lockState = CursorLockMode.Locked;
+        camera1.gameObject.SetActive(true);
+        camera2.gameObject.SetActive(false);
+    }
+
+    void Update()
+    {
+        HandleMovement();
+        HandleRotation();
+        HandleJump();
+        HandleAiming();
+    }
+
+    private void HandleMovement()
+    {
+        bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        float currentSpeed = isRunning ? runSpeed : speed;
+
+        float moveVertical = Input.GetAxis("Vertical");
+        float moveHorizontal = Input.GetAxis("Horizontal");
+
+        Vector3 forward = cameraPivot.forward;
+        Vector3 right = cameraPivot.right;
+
+        forward.y = 0;
+        right.y = 0;
+        forward.Normalize();
+        right.Normalize();
+
+        Vector3 moveDirection = (forward * moveVertical + right * moveHorizontal).normalized * (currentSpeed * Time.deltaTime);
+
+        _rigidBody.MovePosition(_rigidBody.position + moveDirection);
+
+        if (moveDirection != Vector3.zero)
         {
-            bool isRunning = _input.sprint;
-            float currentSpeed = isRunning ? runSpeed : speed;
+            Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+            _physicalBody.rotation = Quaternion.Slerp(_physicalBody.rotation, toRotation, rotationSpeed * Time.deltaTime);
+        }
 
-            float moveVertical = _input.move.y;
-            float moveHorizontal = _input.move.x;
+        animator.SetFloat(Speed, moveDirection == Vector3.zero ? 0f : (isRunning ? 1f : 0.5f));
+    }
 
-            Debug.Log($"Move Input: {moveHorizontal}, {moveVertical}");
+    private void HandleRotation()
+    {
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-            Vector3 forward = cameraPivot.forward;
-            Vector3 right = cameraPivot.right;
+        _rotationX += mouseX;
+        _rotationY -= mouseY;
+        _rotationY = Mathf.Clamp(_rotationY, -90f, 90f);
 
-            forward.y = 0;
-            right.y = 0;
-            forward.Normalize();
-            right.Normalize();
+        cameraPivot.localRotation = Quaternion.Euler(_rotationY, _rotationX, 0f);
 
-            Vector3 moveDirection = (forward * moveVertical + right * moveHorizontal).normalized * (currentSpeed * Time.deltaTime);
+        if (isAiming)
+        {
+            Vector3 cameraForward = cameraPivot.forward;
+            cameraForward.y = 0;
+            cameraForward.Normalize();
 
-            Debug.Log($"Move Direction: {moveDirection}");
-
-            _rigidBody.MovePosition(_rigidBody.position + moveDirection);
-
-            if (moveDirection != Vector3.zero)
+            if (cameraForward != Vector3.zero)
             {
-                Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-                _physicalBody.rotation = Quaternion.Slerp(_physicalBody.rotation, toRotation, rotationSpeed * Time.deltaTime);
-            }
-
-            animator.SetFloat(Speed, moveDirection == Vector3.zero ? 0f : (isRunning ? 1f : 0.5f));
-        }
-
-        private void HandleRotation()
-        {
-            float mouseX = _input.look.x * mouseSensitivity * Time.deltaTime;
-            float mouseY = _input.look.y * mouseSensitivity * Time.deltaTime;
-
-            Debug.Log($"Look Input: {mouseX}, {mouseY}");
-
-            _rotationX += mouseX;
-            _rotationY -= mouseY;
-            _rotationY = Mathf.Clamp(_rotationY, -90f, 90f);
-
-            cameraPivot.localRotation = Quaternion.Euler(_rotationY, _rotationX, 0f);
-        }
-
-        private void HandleJump()
-        {
-            if (_input.jump && Mathf.Approximately(_rigidBody.velocity.y, 0))
-            {
-                _rigidBody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
-            }
-        }
-
-        private void HandleCameraSwitch()
-        {
-            if (_input.switchCamera)
-            {
-                _cameraSwitch = !_cameraSwitch;
-                camera1.gameObject.SetActive(!_cameraSwitch);
-                camera2.gameObject.SetActive(_cameraSwitch);
-                Debug.Log($"Camera switched: {_cameraSwitch}");
+                _physicalBody.forward = cameraForward;
             }
         }
+    }
+
+    private void HandleJump()
+    {
+        if (Input.GetButtonDown("Jump") && Mathf.Approximately(_rigidBody.velocity.y, 0))
+        {
+            _rigidBody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+        }
+    }
+
+    private void HandleAiming()
+    {
+        isAiming = Input.GetMouseButton(1); // Right mouse button
+
+        if (isAiming)
+        {
+            camera1.gameObject.SetActive(false);
+            camera2.gameObject.SetActive(true);
+        }
+        else
+        {
+            camera1.gameObject.SetActive(true);
+            camera2.gameObject.SetActive(false);
+        }
+
+        Debug.Log($"Aiming status: {isAiming}");
+    }
+
+    public bool IsAiming()
+    {
+        return isAiming;
     }
 }
