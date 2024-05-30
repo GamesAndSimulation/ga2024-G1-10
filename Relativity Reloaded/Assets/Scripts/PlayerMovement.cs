@@ -1,5 +1,6 @@
 using UnityEngine;
 using Cinemachine;
+using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class PlayerMovement : MonoBehaviour
     private float _rotationY;
     public bool isAiming;
 
+    public KeyCode toggleKey = KeyCode.T; // Key to toggle the rocks
+    private List<GameObject> dimensionalObjects = new List<GameObject>();
+
     void Start()
     {
         if (!TryGetComponent<Rigidbody>(out _rigidBody))
@@ -37,6 +41,9 @@ public class PlayerMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         camera1.gameObject.SetActive(true);
         camera2.gameObject.SetActive(false);
+
+        // Initialize the list with rocks tagged as "Dimensional"
+        dimensionalObjects.AddRange(GameObject.FindGameObjectsWithTag("Dimensional"));
     }
 
     void Update()
@@ -45,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
         HandleRotation();
         HandleJump();
         HandleAiming();
+        HandleRockToggle(); // Add this line to call the new method
     }
 
     private void HandleMovement()
@@ -129,5 +137,19 @@ public class PlayerMovement : MonoBehaviour
     public bool IsAiming()
     {
         return isAiming;
+    }
+
+    private void HandleRockToggle() // New method to toggle rocks
+    {
+        if (Input.GetKeyDown(toggleKey))
+        {
+            foreach (GameObject rock in dimensionalObjects)
+            {
+                if (rock != null)
+                {
+                    rock.SetActive(!rock.activeSelf);
+                }
+            }
+        }
     }
 }
