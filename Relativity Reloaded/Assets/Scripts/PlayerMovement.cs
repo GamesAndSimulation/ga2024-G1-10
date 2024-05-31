@@ -8,8 +8,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Settings")] public float speed = 5f;
     public float runSpeed = 10f;
     public float rotationSpeed = 700f;
-    public float mouseSensitivity = 100f;
+    public float mouseSensitivity = 300f;
+    public float jumpForce = 10f;
 
+    
     [Header("Camera Settings")] public Transform cameraPivot;
     public CinemachineVirtualCamera camera1;
     public CinemachineVirtualCamera camera2;
@@ -120,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump") && Mathf.Approximately(_rigidBody.velocity.y, 0))
         {
-            _rigidBody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+            _rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
 
