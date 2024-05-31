@@ -1,27 +1,33 @@
+using System.Collections;
 using UnityEngine;
 using Cinemachine;
 using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed = 5f;
+    [Header("Movement Settings")] public float speed = 5f;
     public float runSpeed = 10f;
     public float rotationSpeed = 700f;
     public float mouseSensitivity = 100f;
-    public Animator animator;
-    public Transform cameraTransform;
-    public Transform cameraPivot;
+
+    [Header("Camera Settings")] public Transform cameraPivot;
     public CinemachineVirtualCamera camera1;
     public CinemachineVirtualCamera camera2;
-    private Rigidbody _rigidBody;
+
+    [Header("Dimensional Toggle Settings")]
+    public KeyCode toggleKey = KeyCode.T;
+
+    public float fadeDuration = 1.0f;
+
+    [Header("Character Settings")] private Rigidbody _rigidBody;
     private Transform _physicalBody;
+    public Animator animator;
+    private List<GameObject> dimensionalObjects = new List<GameObject>();
+    private bool isAiming;
+
     private static readonly int Speed = Animator.StringToHash("Speed");
     private float _rotationX;
     private float _rotationY;
-    public bool isAiming;
-
-    public KeyCode toggleKey = KeyCode.T; // Key to toggle the rocks
-    private List<GameObject> dimensionalObjects = new List<GameObject>();
 
     void Start()
     {
@@ -71,14 +77,16 @@ public class PlayerMovement : MonoBehaviour
         forward.Normalize();
         right.Normalize();
 
-        Vector3 moveDirection = (forward * moveVertical + right * moveHorizontal).normalized * (currentSpeed * Time.deltaTime);
+        Vector3 moveDirection = (forward * moveVertical + right * moveHorizontal).normalized *
+                                (currentSpeed * Time.deltaTime);
 
         _rigidBody.MovePosition(_rigidBody.position + moveDirection);
 
         if (moveDirection != Vector3.zero)
         {
             Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-            _physicalBody.rotation = Quaternion.Slerp(_physicalBody.rotation, toRotation, rotationSpeed * Time.deltaTime);
+            _physicalBody.rotation =
+                Quaternion.Slerp(_physicalBody.rotation, toRotation, rotationSpeed * Time.deltaTime);
         }
 
         animator.SetFloat(Speed, moveDirection == Vector3.zero ? 0f : (isRunning ? 1f : 0.5f));
@@ -139,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
         return isAiming;
     }
 
-    private void HandleRockToggle() // New method to toggle rocks
+    private void HandleRockToggle()
     {
         if (Input.GetKeyDown(toggleKey))
         {
@@ -147,9 +155,50 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (rock != null)
                 {
-                    rock.SetActive(!rock.activeSelf);
+                    if (rock.activeSelf)
+                    {
+                        StartCoroutine(FadeAndToggle(rock, fadeDuration, false));
+                    }
+                    else
+                    {
+                        StartCoroutine(FadeAndToggle(rock, fadeDuration, true));
+                    }
                 }
             }
+        }
+    }
+
+    private IEnumerator FadeAndToggle(GameObject rock, float duration, bool fadeIn)
+    {
+        Renderer renderer = rock.GetComponent<Renderer>();
+        if (renderer == null)
+        {
+            yield break;
+        }
+
+        Material material = renderer.material;
+        Color initialColor = material.color;
+        float elapsedTime = 0f;
+
+        float startAlpha = fadeIn ? 0f : 1f;
+        float endAlpha = fadeIn ? 1f : 0f;
+
+        if (fadeIn)
+        {
+            rock.SetActive(true);
+        }
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
+            material.color = new Color(initialColor.r, initialColor.g, initialColor.b, alpha);
+            yield return null;
+        }
+
+        if (!fadeIn)
+        {
+            rock.SetActive(false);
         }
     }
 }
