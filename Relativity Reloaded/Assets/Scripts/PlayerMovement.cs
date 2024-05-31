@@ -168,9 +168,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator FadeAndToggle(GameObject rock, float duration, bool fadeIn)
+    private IEnumerator FadeAndToggle(GameObject dimensionalObject, float duration, bool fadeIn)
     {
-        Renderer renderer = rock.GetComponent<Renderer>();
+        Renderer renderer = dimensionalObject.GetComponent<Renderer>();
         if (renderer == null)
         {
             yield break;
@@ -185,8 +185,18 @@ public class PlayerMovement : MonoBehaviour
 
         if (fadeIn)
         {
-            rock.SetActive(true);
+            dimensionalObject.SetActive(true);
         }
+
+        // Set material to use fade mode
+        material.SetFloat("_Mode", 2);
+        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        material.SetInt("_ZWrite", 0);
+        material.DisableKeyword("_ALPHATEST_ON");
+        material.EnableKeyword("_ALPHABLEND_ON");
+        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        material.renderQueue = 3000;
 
         while (elapsedTime < duration)
         {
@@ -198,7 +208,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!fadeIn)
         {
-            rock.SetActive(false);
+            dimensionalObject.SetActive(false);
         }
     }
 }
