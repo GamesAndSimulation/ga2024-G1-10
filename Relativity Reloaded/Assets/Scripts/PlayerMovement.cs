@@ -48,8 +48,8 @@ public class PlayerMovement : MonoBehaviour
         camera1.gameObject.SetActive(true);
         camera2.gameObject.SetActive(false);
 
-        // Initialize the list with rocks tagged as "Dimensional"
-        dimensionalObjects.AddRange(GameObject.FindGameObjectsWithTag("Dimensional"));
+        dimensionalObjects = DimensionalObjectManager.Instance.GetDimensionalObjects();
+        Debug.Log($"Found {dimensionalObjects.Count} dimensional objects.");
     }
 
     void Update()
