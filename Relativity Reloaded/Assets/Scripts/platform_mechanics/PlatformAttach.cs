@@ -1,24 +1,25 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Project.Internal.Scripts.Enemies.platform_mechanics
 {
     public class PlatformAttach : MonoBehaviour
     {
-        public GameObject Player;
+        [FormerlySerializedAs("Player")] public GameObject player;
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject == Player)
+            if (other.gameObject == player)
             {
-                Player.transform.parent = transform;
+                player.transform.parent = transform;
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject == Player)
+            if (other.gameObject == player)
             {
-                Player.transform.parent = null;
+                player.transform.parent = null;
             }
         }
     }
