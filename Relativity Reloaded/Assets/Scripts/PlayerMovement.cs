@@ -1,30 +1,27 @@
-using System.Collections;
 using UnityEngine;
 using Cinemachine;
-using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Movement Settings")] public float speed = 5f;
+    [Header("Movement Settings")] 
+    public float speed = 5f;
     public float runSpeed = 10f;
     public float rotationSpeed = 700f;
     public float mouseSensitivity = 300f;
     public float jumpForce = 10f;
 
-    
-    [Header("Camera Settings")] public Transform cameraPivot;
+    [Header("Camera Settings")] 
+    public Transform cameraPivot;
     public CinemachineVirtualCamera camera1;
     public CinemachineVirtualCamera camera2;
 
     [Header("Dimensional Toggle Settings")]
     public KeyCode toggleKey = KeyCode.T;
 
-    public float fadeDuration = 1.0f;
-
-    [Header("Character Settings")] private Rigidbody _rigidBody;
+    [Header("Character Settings")] 
+    private Rigidbody _rigidBody;
     private Transform _physicalBody;
     public Animator animator;
-    private List<GameObject> dimensionalObjects = new List<GameObject>();
     private bool isAiming;
 
     private static readonly int Speed = Animator.StringToHash("Speed");
@@ -49,9 +46,6 @@ public class PlayerMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         camera1.gameObject.SetActive(true);
         camera2.gameObject.SetActive(false);
-
-        dimensionalObjects = DimensionalObjectManager.Instance.GetDimensionalObjects();
-        Debug.Log($"Found {dimensionalObjects.Count} dimensional objects.");
     }
 
     void Update()
@@ -60,7 +54,15 @@ public class PlayerMovement : MonoBehaviour
         HandleRotation();
         HandleJump();
         HandleAiming();
-        HandleRockToggle(); // Add this line to call the new method
+        HandleDimensionalToggle();
+    }
+
+    private void HandleDimensionalToggle()
+    {
+        if (Input.GetKeyDown(toggleKey))
+        {
+            DimensionalObjectManager.Instance.ToggleDimensionalObjects();
+        }
     }
 
     private void HandleMovement()
@@ -147,70 +149,5 @@ public class PlayerMovement : MonoBehaviour
     public bool IsAiming()
     {
         return isAiming;
-    }
-
-    private void HandleRockToggle()
-    {
-        if (Input.GetKeyDown(toggleKey))
-        {
-            foreach (GameObject rock in dimensionalObjects)
-            {
-                if (rock != null)
-                {
-                    if (rock.activeSelf)
-                    {
-                        StartCoroutine(FadeAndToggle(rock, fadeDuration, false));
-                    }
-                    else
-                    {
-                        StartCoroutine(FadeAndToggle(rock, fadeDuration, true));
-                    }
-                }
-            }
-        }
-    }
-
-    private IEnumerator FadeAndToggle(GameObject dimensionalObject, float duration, bool fadeIn)
-    {
-        Renderer renderer = dimensionalObject.GetComponent<Renderer>();
-        if (renderer == null)
-        {
-            yield break;
-        }
-
-        Material material = renderer.material;
-        Color initialColor = material.color;
-        float elapsedTime = 0f;
-
-        float startAlpha = fadeIn ? 0f : 1f;
-        float endAlpha = fadeIn ? 1f : 0f;
-
-        if (fadeIn)
-        {
-            dimensionalObject.SetActive(true);
-        }
-
-        // Set material to use fade mode
-        material.SetFloat("_Mode", 2);
-        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        material.SetInt("_ZWrite", 0);
-        material.DisableKeyword("_ALPHATEST_ON");
-        material.EnableKeyword("_ALPHABLEND_ON");
-        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        material.renderQueue = 3000;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            float alpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
-            material.color = new Color(initialColor.r, initialColor.g, initialColor.b, alpha);
-            yield return null;
-        }
-
-        if (!fadeIn)
-        {
-            dimensionalObject.SetActive(false);
-        }
     }
 }
