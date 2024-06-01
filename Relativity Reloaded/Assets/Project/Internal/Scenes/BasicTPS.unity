@@ -1240,7 +1240,7 @@ Transform:
   m_GameObject: {fileID: 90189524}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 21.3291, y: 17.126, z: -35.408}
+  m_LocalPosition: {x: 21.3291, y: 17.126, z: -28.408}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1626,7 +1626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6df1cabbd0f105f4ea8e08ce4330b31e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeDuration: 1
+  fadeDuration: 0.13
 --- !u!4 &217948940
 Transform:
   m_ObjectHideFlags: 0
@@ -2434,7 +2434,7 @@ Transform:
   m_GameObject: {fileID: 350781306}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20.3291, y: 17.126, z: -31.908}
+  m_LocalPosition: {x: 20.3291, y: 17.126, z: -24.908}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6298,7 +6298,7 @@ Transform:
   m_GameObject: {fileID: 890284856}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.3291, y: 17.126, z: -35.408}
+  m_LocalPosition: {x: 21.3291, y: 17.126, z: -28.408}
   m_LocalScale: {x: 1, y: 1, z: 0.90975}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8700,6 +8700,7 @@ GameObject:
   - component: {fileID: 998062158}
   - component: {fileID: 998062163}
   - component: {fileID: 998062164}
+  - component: {fileID: 998062165}
   m_Layer: 0
   m_Name: moving_platform
   m_TagString: Untagged
@@ -8715,7 +8716,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 998062157}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: e391478a484d4554698cdb48eeb14bce, type: 2}
   m_CullingMode: 0
@@ -8735,7 +8736,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 998062157}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9fb0989e16e322a44944770d26481bac, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -8809,7 +8810,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 20.3291, y: 15, z: -25}
-  m_LocalScale: {x: 7.4351153, y: 0.20412922, z: 11.263515}
+  m_LocalScale: {x: 5.616486, y: 0.20412922, z: 5.440278}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -8846,8 +8847,35 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!54 &998062165
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998062157}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &1013790008
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9274,7 +9302,7 @@ Transform:
   m_GameObject: {fileID: 1089582141}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.3291, y: 15, z: -32}
+  m_LocalPosition: {x: 20.3291, y: 15, z: -25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9312,7 +9340,7 @@ Rigidbody:
   m_GameObject: {fileID: 1089582141}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 2
+  m_Drag: 1
   m_AngularDrag: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -9364,7 +9392,7 @@ MonoBehaviour:
   runSpeed: 10
   rotationSpeed: 700
   mouseSensitivity: 300
-  jumpForce: 18
+  jumpForce: 10
   cameraPivot: {fileID: 170728578}
   camera1: {fileID: 90189525}
   camera2: {fileID: 350781307}
