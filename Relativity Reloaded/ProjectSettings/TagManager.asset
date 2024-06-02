@@ -8,6 +8,7 @@ TagManager:
   - PlayerTarget
   - Enemy
   - Dimensional
+  - NoSpawn
   layers:
   - Default
   - TransparentFX

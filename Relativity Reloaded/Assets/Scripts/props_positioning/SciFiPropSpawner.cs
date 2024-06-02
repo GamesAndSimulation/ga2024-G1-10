@@ -9,6 +9,7 @@ namespace props_positioning
         public string propFolder = "Assets/3D Sprite Sci-Fi Props/SpriteProps_Prefabs"; // Folder to load props from
         public int numberOfProps = 100; // Number of props to place per terrain
         public Vector3 areaSize = new Vector3(50, 0, 50); // Area size for prop placement
+        public string excludeTag = "NoSpawn"; // Tag to exclude terrains
         private GameObject[] propPrefabs; // Array of sci-fi prop prefabs
         private Terrain[] terrains; // Array of all terrains in the scene
 
@@ -37,6 +38,12 @@ namespace props_positioning
             // Spawn the specified number of props for each terrain
             foreach (Terrain terrain in terrains)
             {
+                // Check if the terrain has the exclude tag
+                if (terrain.CompareTag(excludeTag))
+                {
+                    continue; // Skip this terrain
+                }
+
                 for (int i = 0; i < numberOfProps; i++)
                 {
                     SpawnProp(terrain);
@@ -79,9 +86,9 @@ namespace props_positioning
                 // Random position within the defined area on the terrain
                 float randomX = Random.Range(terrainPosition.x, terrainPosition.x + terrainSize.x);
                 float randomZ = Random.Range(terrainPosition.z, terrainPosition.z + terrainSize.z);
-                float terrainHeight = terrain.SampleHeight(new Vector3(randomX, 0, randomZ));
+                float terrainHeight = terrain.SampleHeight(new Vector3(randomX, 0, randomZ)) + terrainPosition.y;
 
-                randomPosition = new Vector3(randomX, 0, randomZ); // Set Y to 0 initially
+                randomPosition = new Vector3(randomX, terrainHeight, randomZ);
 
                 // Randomly select a prop prefab
                 propPrefab = propPrefabs[Random.Range(0, propPrefabs.Length)];
@@ -91,7 +98,6 @@ namespace props_positioning
                 {
                     randomPosition.y += 0.5f;
                 }
-                
 
                 // Random rotation
                 randomRotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
@@ -106,10 +112,7 @@ namespace props_positioning
 
             if (validPosition)
             {
-                // Random scale
-                float randomScale = Random.Range(0.8f, 1.2f);
-
-                // Instantiate the prop at the random position with random rotation and scale
+                // Instantiate the prop at the random position with random rotation
                 GameObject prop = Instantiate(propPrefab, randomPosition, randomRotation);
 
                 // Adjust position to ensure no collision with the terrain

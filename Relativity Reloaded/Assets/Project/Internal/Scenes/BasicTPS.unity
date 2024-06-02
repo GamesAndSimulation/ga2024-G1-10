@@ -2188,7 +2188,11 @@ Transform:
   m_LocalPosition: {x: -150, y: 1, z: 99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2080140920}
+  - {fileID: 1101854957}
+  - {fileID: 1519913313}
+  - {fileID: 2140615107}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &332689639
@@ -4252,7 +4256,7 @@ GameObject:
   - component: {fileID: 630482499}
   m_Layer: 0
   m_Name: Terrain_(-177.00, 0.00, -76.00)
-  m_TagString: Untagged
+  m_TagString: NoSpawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -9934,12 +9938,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1101854952}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -153, y: 1, z: -46}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3, y: 0, z: -145}
   m_LocalScale: {x: 1.5432, y: 1, z: 1.9737622}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 316994669}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1101854958
 MonoBehaviour:
@@ -9953,8 +9957,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a8542ae0fbf472f8ed625505d1c0c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lakeMaterial: {fileID: 2100000, guid: 8538bd626cb3e80478f62e319f75e337, type: 2}
-  frozenColor: {r: 0, g: 1, b: 1, a: 1}
+  originalMaterial: {fileID: 2100000, guid: 8538bd626cb3e80478f62e319f75e337, type: 2}
+  frozenMaterial: {fileID: 2100000, guid: d57dbec7f762c1b45a47d6a03c99d402, type: 2}
 --- !u!1001 &1113568480
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13251,12 +13255,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1519913308}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -153, y: 1, z: 44}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3, y: 0, z: -55}
   m_LocalScale: {x: 1.5432, y: 1, z: 1.5291}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 316994669}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1519913314
 MonoBehaviour:
@@ -13270,8 +13274,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a8542ae0fbf472f8ed625505d1c0c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lakeMaterial: {fileID: 2100000, guid: 8538bd626cb3e80478f62e319f75e337, type: 2}
-  frozenColor: {r: 0, g: 1, b: 1, a: 1}
+  originalMaterial: {fileID: 2100000, guid: 8538bd626cb3e80478f62e319f75e337, type: 2}
+  frozenMaterial: {fileID: 2100000, guid: d57dbec7f762c1b45a47d6a03c99d402, type: 2}
 --- !u!1001 &1548503561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15089,12 +15093,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2080140915}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -153, y: 1, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3, y: 0, z: -99}
   m_LocalScale: {x: 1.5432, y: 1, z: 1.5291}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 316994669}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2080140921
 MonoBehaviour:
@@ -15108,8 +15112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a8542ae0fbf472f8ed625505d1c0c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lakeMaterial: {fileID: 2100000, guid: 8538bd626cb3e80478f62e319f75e337, type: 2}
-  frozenColor: {r: 0, g: 1, b: 1, a: 1}
+  originalMaterial: {fileID: 2100000, guid: 8538bd626cb3e80478f62e319f75e337, type: 2}
+  frozenMaterial: {fileID: 2100000, guid: d57dbec7f762c1b45a47d6a03c99d402, type: 2}
 --- !u!4 &2086706847 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 945401809, guid: a9b2c2ea8472caa40b47a88cf3badc04, type: 3}
@@ -15230,7 +15234,7 @@ GameObject:
   - component: {fileID: 2110569628}
   m_Layer: 0
   m_Name: Terrain_(-117.00, 0.00, -76.00)
-  m_TagString: Untagged
+  m_TagString: NoSpawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -15433,6 +15437,7 @@ MonoBehaviour:
   propFolder: Assets/3D Sprite Sci-Fi Props/SpriteProps_Prefabs
   numberOfProps: 10
   areaSize: {x: 50, y: 0, z: 50}
+  excludeTag: NoSpawn
 --- !u!4 &2121487463
 Transform:
   m_ObjectHideFlags: 0
@@ -15564,12 +15569,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2140615102}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -153, y: 1, z: 94}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3, y: 0, z: -5}
   m_LocalScale: {x: 1.5432, y: 1, z: 1.8516887}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 316994669}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2140615108
 MonoBehaviour:
@@ -15583,8 +15588,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a8542ae0fbf472f8ed625505d1c0c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lakeMaterial: {fileID: 2100000, guid: 8538bd626cb3e80478f62e319f75e337, type: 2}
-  frozenColor: {r: 0, g: 1, b: 1, a: 1}
+  originalMaterial: {fileID: 2100000, guid: 8538bd626cb3e80478f62e319f75e337, type: 2}
+  frozenMaterial: {fileID: 2100000, guid: d57dbec7f762c1b45a47d6a03c99d402, type: 2}
 --- !u!4 &2143722445 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4119340359363814916, guid: 431e05c5e2b18ba4fa6b3b0a6f687786, type: 3}
@@ -15620,7 +15625,3 @@ SceneRoots:
   - {fileID: 1517145012}
   - {fileID: 335891185}
   - {fileID: 316994669}
-  - {fileID: 2080140920}
-  - {fileID: 1101854957}
-  - {fileID: 1519913313}
-  - {fileID: 2140615107}
