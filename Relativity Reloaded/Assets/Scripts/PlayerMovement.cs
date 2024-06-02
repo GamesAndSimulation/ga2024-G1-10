@@ -4,13 +4,15 @@ using Cinemachine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Movement Settings")] public float speed = 5f;
+    [Header("Movement Settings")]
+    public float speed = 5f;
     public float runSpeed = 10f;
     public float rotationSpeed = 700f;
     public float mouseSensitivity = 300f;
     public float jumpForce = 10f;
 
-    [Header("Glide Settings")] public KeyCode glideKey = KeyCode.G; // Key to start gliding
+    [Header("Glide Settings")]
+    public KeyCode glideKey = KeyCode.G; // Key to start gliding
     public float glideGravity = 2.0f; // Custom gravity value during glide
     private bool isGliding = false;
 
@@ -24,14 +26,16 @@ public class PlayerMovement : MonoBehaviour
     public KeyCode raiseKey = KeyCode.R; // Key to raise the terrain
     public KeyCode lowerKey = KeyCode.F; // Key to lower the terrain
 
-    [Header("Camera Settings")] public Transform cameraPivot;
+    [Header("Camera Settings")]
+    public Transform cameraPivot;
     public CinemachineVirtualCamera camera1;
     public CinemachineVirtualCamera camera2;
 
     [Header("Dimensional Toggle Settings")]
     public KeyCode toggleKey = KeyCode.T;
 
-    [Header("Character Settings")] private Rigidbody _rigidBody;
+    [Header("Character Settings")]
+    private Rigidbody _rigidBody;
     private Transform _physicalBody;
     public Animator animator;
     private bool isAiming;
@@ -72,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
         HandleGlide();
         HandleTerrainManipulation();
     }
-    
+
     public bool IsAiming()
     {
         return isAiming;
@@ -102,16 +106,14 @@ public class PlayerMovement : MonoBehaviour
         forward.Normalize();
         right.Normalize();
 
-        Vector3 moveDirection = (forward * moveVertical + right * moveHorizontal).normalized *
-                                (currentSpeed * Time.deltaTime);
+        Vector3 moveDirection = (forward * moveVertical + right * moveHorizontal).normalized * (currentSpeed * Time.deltaTime);
 
         _rigidBody.MovePosition(_rigidBody.position + moveDirection);
 
         if (moveDirection != Vector3.zero)
         {
             Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-            _physicalBody.rotation =
-                Quaternion.Slerp(_physicalBody.rotation, toRotation, rotationSpeed * Time.deltaTime);
+            _physicalBody.rotation = Quaternion.Slerp(_physicalBody.rotation, toRotation, rotationSpeed * Time.deltaTime);
         }
 
         animator.SetFloat(Speed, moveDirection == Vector3.zero ? 0f : (isRunning ? 1f : 0.5f));
@@ -143,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleJump()
     {
-        if (Input.GetButtonDown("Jump") && Mathf.Approximately(_rigidBody.velocity.y, 0))
+        if (Input.GetButtonDown("Jump") && IsGrounded())
         {
             _rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
@@ -151,11 +153,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleGlide()
     {
-        if (Input.GetButton("Jump") && !isGrounded() && _rigidBody.velocity.y < 0)
+        if (Input.GetButton("Jump") && !IsGrounded() && _rigidBody.velocity.y < 0)
         {
             StartGliding();
         }
-        else if (Input.GetButtonUp("Jump") || isGrounded())
+        else if (Input.GetButtonUp("Jump") || IsGrounded())
         {
             StopGliding();
         }
@@ -190,11 +192,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private bool isGrounded()
+    private bool IsGrounded()
     {
-        // Assumes there is a method to check if the character is grounded
-        // You can implement this using, for example, a downward raycast
-        return Physics.Raycast(transform.position, Vector3.down, 1.1f);
+        float rayLength = 1.1f; // Adjust this length as necessary
+        Vector3 origin = transform.position + Vector3.up * 0.1f; // Slightly above the player
+
+        // Perform raycasts around the player's base
+        bool isGroundedCenter = Physics.Raycast(origin, Vector3.down, rayLength);
+        bool isGroundedFront = Physics.Raycast(origin + transform.forward * 0.5f, Vector3.down, rayLength);
+        bool isGroundedBack = Physics.Raycast(origin - transform.forward * 0.5f, Vector3.down, rayLength);
+        bool isGroundedLeft = Physics.Raycast(origin - transform.right * 0.5f, Vector3.down, rayLength);
+        bool isGroundedRight = Physics.Raycast(origin + transform.right * 0.5f, Vector3.down, rayLength);
+
+        return isGroundedCenter || isGroundedFront || isGroundedBack || isGroundedLeft || isGroundedRight;
     }
 
     private void HandleAiming()
@@ -263,8 +273,7 @@ public class PlayerMovement : MonoBehaviour
             int radiusInHeights = Mathf.RoundToInt(radius / terrainData.size.x * terrainData.heightmapResolution);
 
             // Get the current heights in the area around the hit point
-            float[,] heights = terrainData.GetHeights(xBase - radiusInHeights / 2, zBase - radiusInHeights / 2,
-                radiusInHeights, radiusInHeights);
+            float[,] heights = terrainData.GetHeights(xBase - radiusInHeights / 2, zBase - radiusInHeights / 2, radiusInHeights, radiusInHeights);
 
             // Loop through the heightmap points in the specified radius
             for (int x = 0; x < radiusInHeights; x++)
@@ -272,19 +281,16 @@ public class PlayerMovement : MonoBehaviour
                 for (int z = 0; z < radiusInHeights; z++)
                 {
                     // Calculate the distance from the center of the radius
-                    float distance = Vector2.Distance(new Vector2(x, z),
-                        new Vector2(radiusInHeights / 2, radiusInHeights / 2));
+                    float distance = Vector2.Distance(new Vector2(x, z), new Vector2(radiusInHeights / 2, radiusInHeights / 2));
 
                     // If the point is within the radius, adjust the height
                     if (distance <= radiusInHeights / 2)
                     {
                         // Calculate the adjustment based on the distance and power
-                        float adjustment = (radiusInHeights / 2 - distance) / (radiusInHeights / 2) * power *
-                                           Time.deltaTime;
+                        float adjustment = (radiusInHeights / 2 - distance) / (radiusInHeights / 2) * power * Time.deltaTime;
 
                         // Store the original height for future reversion
-                        Vector2Int point = new Vector2Int(xBase - radiusInHeights / 2 + x,
-                            zBase - radiusInHeights / 2 + z);
+                        Vector2Int point = new Vector2Int(xBase - radiusInHeights / 2 + x, zBase - radiusInHeights / 2 + z);
                         if (!originalHeights.ContainsKey(point))
                         {
                             originalHeights[point] = heights[x, z];
