@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
     private float _rotationX;
     private float _rotationY;
     public bool isAiming;
+    public AudioSource walkingSound;
+
 
     void Start()
     {
