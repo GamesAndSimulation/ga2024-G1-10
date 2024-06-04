@@ -4,11 +4,11 @@ namespace props_positioning
 
     public class GunManager : MonoBehaviour
     {
-        void OnTriggerEnter(Collider other)
+        void OnCollisionEnter(Collision collision)
         {
-            if (other.CompareTag("Player"))
+            if (collision.gameObject.CompareTag("Player"))
             {
-                PlayerStats playerStats = other.GetComponent<PlayerStats>();
+                PlayerStats playerStats = collision.gameObject.GetComponent<PlayerStats>();
                 if (playerStats != null)
                 {
                     playerStats.HasGun = true;
@@ -18,5 +18,4 @@ namespace props_positioning
             }
         }
     }
-
 }
