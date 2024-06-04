@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Cinemachine;
+using Project.Internal.Scripts.Enemies.reverse_power;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -34,17 +35,25 @@ public class PlayerMovement : MonoBehaviour
     [Header("Dimensional Toggle Settings")]
     public KeyCode toggleKey = KeyCode.T;
 
+    [Header("Skybox Settings")]
+    public Material originalSkybox; // Reference to the original skybox
+    public Material toggledSkybox; // Reference to the toggled skybox
+
+    [Header("Reversal Settings")]
+    public KeyCode reversalKey = KeyCode.Z; // Key to activate reversal power
+
     [Header("Character Settings")]
     private Rigidbody _rigidBody;
     private Transform _physicalBody;
     public Animator animator;
-    private bool isAiming;
+    private bool _isAiming;
 
     private static readonly int Speed = Animator.StringToHash("Speed");
     private float _rotationX;
     private float _rotationY;
 
-    private Dictionary<Vector2Int, float> originalHeights = new Dictionary<Vector2Int, float>();
+    private bool _isSkyboxToggled = false; // Track whether the skybox is toggled or not
+    private readonly Dictionary<Vector2Int, float> _originalHeights = new Dictionary<Vector2Int, float>();
 
     void Start()
     {
@@ -64,6 +73,12 @@ public class PlayerMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         camera1.gameObject.SetActive(true);
         camera2.gameObject.SetActive(false);
+
+        // Set the initial skybox
+        if (originalSkybox != null)
+        {
+            RenderSettings.skybox = originalSkybox;
+        }
     }
 
     void Update()
@@ -75,11 +90,12 @@ public class PlayerMovement : MonoBehaviour
         HandleDimensionalToggle();
         HandleGlide();
         HandleTerrainManipulation();
+        HandleReversal();
     }
 
     public bool IsAiming()
     {
-        return isAiming;
+        return _isAiming;
     }
 
     private void HandleDimensionalToggle()
@@ -87,7 +103,22 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(toggleKey))
         {
             DimensionalObjectManager.Instance.ToggleDimensionalObjects();
+            ToggleSkybox();
         }
+    }
+
+    private void ToggleSkybox()
+    {
+        if (_isSkyboxToggled)
+        {
+            RenderSettings.skybox = originalSkybox;
+        }
+        else
+        {
+            RenderSettings.skybox = toggledSkybox;
+        }
+        _isSkyboxToggled = !_isSkyboxToggled;
+        DynamicGI.UpdateEnvironment(); // Update the environment lighting
     }
 
     private void HandleMovement()
@@ -130,7 +161,7 @@ public class PlayerMovement : MonoBehaviour
 
         cameraPivot.localRotation = Quaternion.Euler(_rotationY, _rotationX, 0f);
 
-        if (isAiming)
+        if (_isAiming)
         {
             Vector3 cameraForward = cameraPivot.forward;
             cameraForward.y = 0;
@@ -209,9 +240,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleAiming()
     {
-        isAiming = Input.GetMouseButton(1); // Right mouse button
+        _isAiming = Input.GetMouseButton(1); // Right mouse button
 
-        if (isAiming)
+        if (_isAiming)
         {
             camera1.gameObject.SetActive(false);
             camera2.gameObject.SetActive(true);
@@ -222,7 +253,7 @@ public class PlayerMovement : MonoBehaviour
             camera2.gameObject.SetActive(false);
         }
 
-        Debug.Log($"Aiming status: {isAiming}");
+        Debug.Log($"Aiming status: {_isAiming}");
     }
 
     private void HandleTerrainManipulation()
@@ -291,9 +322,9 @@ public class PlayerMovement : MonoBehaviour
 
                         // Store the original height for future reversion
                         Vector2Int point = new Vector2Int(xBase - radiusInHeights / 2 + x, zBase - radiusInHeights / 2 + z);
-                        if (!originalHeights.ContainsKey(point))
+                        if (!_originalHeights.ContainsKey(point))
                         {
-                            originalHeights[point] = heights[x, z];
+                            _originalHeights[point] = heights[x, z];
                         }
 
                         // Raise or lower the terrain based on the input
@@ -319,7 +350,7 @@ public class PlayerMovement : MonoBehaviour
         // Get the TerrainData from the terrain
         TerrainData terrainData = terrain.terrainData;
 
-        foreach (var entry in originalHeights)
+        foreach (var entry in _originalHeights)
         {
             int x = entry.Key.x;
             int z = entry.Key.y;
@@ -329,6 +360,26 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Clear the stored original heights after reverting
-        originalHeights.Clear();
+        _originalHeights.Clear();
+    }
+
+    private void HandleReversal()
+    {
+        if (Input.GetKeyDown(reversalKey))
+        {
+            Reversable[] reversableObjects = FindObjectsOfType<Reversable>();
+            foreach (Reversable reversable in reversableObjects)
+            {
+                reversable.StartReversing();
+            }
+        }
+        else if (Input.GetKeyUp(reversalKey))
+        {
+            Reversable[] reversableObjects = FindObjectsOfType<Reversable>();
+            foreach (Reversable reversable in reversableObjects)
+            {
+                reversable.StopReversing();
+            }
+        }
     }
 }
