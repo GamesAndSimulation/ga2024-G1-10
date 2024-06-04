@@ -1,4 +1,6 @@
+using Project.Internal.Scripts.Enemies.player;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Shooter : MonoBehaviour
 {
@@ -7,7 +9,7 @@ public class Shooter : MonoBehaviour
     public Camera playerCamera;
     public Vector3 shootOffset = new Vector3(0, 2.5f, 0f);
     public Transform playerTransform;
-    public PlayerMovement playerMovement;
+    [FormerlySerializedAs("playerAiming")] public PlayerMovement playerMovement;
     public AudioSource shootMusic;
 
 
