@@ -49,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _isAiming;
 
     private static readonly int Speed = Animator.StringToHash("Speed");
+    private static readonly int Jump = Animator.StringToHash("Jump");
     private float _rotationX;
     private float _rotationY;
 
@@ -180,6 +181,8 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
             _rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            animator.SetBool(Jump, true);
+
         }
     }
 
@@ -228,7 +231,6 @@ public class PlayerMovement : MonoBehaviour
     {
         float rayLength = 1.1f; // Adjust this length as necessary
         Vector3 origin = transform.position + Vector3.up * 0.1f; // Slightly above the player
-
         // Perform raycasts around the player's base
         bool isGroundedCenter = Physics.Raycast(origin, Vector3.down, rayLength);
         bool isGroundedFront = Physics.Raycast(origin + transform.forward * 0.5f, Vector3.down, rayLength);
