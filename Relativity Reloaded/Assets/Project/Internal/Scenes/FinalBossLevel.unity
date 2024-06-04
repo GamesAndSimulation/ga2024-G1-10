@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -466,6 +466,13 @@ MonoBehaviour:
     GateFit: 2
     FocusDistance: 10
     m_SensorSize: {x: 1, y: 1}
+    Iso: 200
+    ShutterSpeed: 0.005
+    Aperture: 16
+    BladeCount: 5
+    Curvature: {x: 2, y: 11}
+    BarrelClipping: 0.25
+    Anamorphism: 0
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1033,6 +1040,13 @@ MonoBehaviour:
     GateFit: 2
     FocusDistance: 10
     m_SensorSize: {x: 1, y: 1}
+    Iso: 200
+    ShutterSpeed: 0.005
+    Aperture: 16
+    BladeCount: 5
+    Curvature: {x: 2, y: 11}
+    BarrelClipping: 0.25
+    Anamorphism: 0
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -3343,12 +3357,24 @@ MonoBehaviour:
   runSpeed: 10
   rotationSpeed: 700
   mouseSensitivity: 300
-  animator: {fileID: 415573886}
-  cameraTransform: {fileID: 890284859}
+  jumpForce: 10
+  glideKey: 103
+  glideGravity: 2
+  terrain: {fileID: 0}
+  power: 0.2
+  radius: 10
+  minRadius: 10
+  maxRadius: 15
+  raiseKey: 114
+  lowerKey: 102
   cameraPivot: {fileID: 170728578}
   camera1: {fileID: 90189525}
   camera2: {fileID: 350781307}
-  isAiming: 0
+  toggleKey: 116
+  originalSkybox: {fileID: 0}
+  toggledSkybox: {fileID: 0}
+  reversalKey: 122
+  animator: {fileID: 415573886}
   walkingSound: {fileID: 0}
 --- !u!114 &1089582148
 MonoBehaviour:
