@@ -8,6 +8,8 @@ public class CharacterStats : MonoBehaviour
     [SerializeField] protected int maxHealth;
     [SerializeField] protected bool isDead;
     public GameManager gameManager;
+    public AudioSource damageSound;
+
 
     public virtual void Alive()
     {
@@ -35,6 +37,7 @@ public class CharacterStats : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health = health - damage;
+        damageSound.Play();
         Alive();
     }
 

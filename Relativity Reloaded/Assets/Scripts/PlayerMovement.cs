@@ -54,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _isSkyboxToggled = false; // Track whether the skybox is toggled or not
     private readonly Dictionary<Vector2Int, float> _originalHeights = new Dictionary<Vector2Int, float>();
+    public AudioSource walkingSound;
 
     void Start()
     {

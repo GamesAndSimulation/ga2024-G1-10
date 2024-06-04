@@ -8,6 +8,8 @@ public class Shooter : MonoBehaviour
     public Vector3 shootOffset = new Vector3(0, 2.5f, 0f);
     public Transform playerTransform;
     public PlayerMovement playerMovement;
+    public AudioSource shootMusic;
+
 
     void Update()
     {
@@ -42,6 +44,7 @@ public class Shooter : MonoBehaviour
 
         Vector3 shootDirection = playerCamera.transform.forward;
         rb.velocity = shootDirection * bulletSpeed;
+        shootMusic.Play();
 
         Debug.Log($"Bullet instantiated at {spawnPosition} with velocity {rb.velocity}");
     }

@@ -7,13 +7,17 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
-    public float restartDelay = 1f;
+    public float restartDelay = 7f;
     public GameObject failLevelUI;
+    public AudioSource deathMusic;
+    public AudioSource bossMusic;
 
 
     public void EndGame(bool gameHasEnded)
     {
         failLevelUI.SetActive(true);
+        bossMusic.Stop();
+        deathMusic.Play();
         Debug.Log("Game Over!");
         Invoke("Restart", restartDelay);
     }
