@@ -15676,7 +15676,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   maxHealth: 0
-  isDead: 0
+  isDead: 1
   gameManager: {fileID: 1799507852}
   damageSound: {fileID: 607202383}
   hud: {fileID: 387110359}
@@ -21081,7 +21081,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   restartDelay: 1
   failLevelUI: {fileID: 387110355}
-  deathMusic: {fileID: 0}
+  deathMusic: {fileID: 2007360897}
   bossMusic: {fileID: 241439533}
 --- !u!4 &1799507853
 Transform:
