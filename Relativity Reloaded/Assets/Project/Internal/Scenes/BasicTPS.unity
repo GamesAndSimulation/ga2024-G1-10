@@ -1319,7 +1319,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1334,9 +1334,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 98442359}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2a0fbb9a16b43ffb1cbbd9ba45324ca, type: 3}
+  m_Script: {fileID: 11500000, guid: a3920422e1954cf08013f7394c4d29fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 1089582148}
 --- !u!1 &99028829 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 945401805, guid: a9b2c2ea8472caa40b47a88cf3badc04, type: 3}
@@ -10715,10 +10716,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1000011365394840, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1945732245}
+      addedObject: {fileID: 1945732244}
     - targetCorrespondingSourceObject: {fileID: 1000011365394840, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1945732244}
+      addedObject: {fileID: 1945732245}
   m_SourcePrefab: {fileID: 100100000, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
 --- !u!1001 &565921926
 PrefabInstance:
@@ -28406,10 +28407,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1000011365394840, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1573879675}
+      addedObject: {fileID: 1573879674}
     - targetCorrespondingSourceObject: {fileID: 1000011365394840, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1573879674}
+      addedObject: {fileID: 1573879675}
   m_SourcePrefab: {fileID: 100100000, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
 --- !u!4 &1573879673 stripped
 Transform:
@@ -28431,7 +28432,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -28446,9 +28447,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 997594040}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2a0fbb9a16b43ffb1cbbd9ba45324ca, type: 3}
+  m_Script: {fileID: 11500000, guid: a3920422e1954cf08013f7394c4d29fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 1089582148}
 --- !u!4 &1593027951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 945401809, guid: a9b2c2ea8472caa40b47a88cf3badc04, type: 3}
@@ -35002,10 +35004,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1000011365394840, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1813862295}
+      addedObject: {fileID: 1813862294}
     - targetCorrespondingSourceObject: {fileID: 1000011365394840, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1813862294}
+      addedObject: {fileID: 1813862295}
   m_SourcePrefab: {fileID: 100100000, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
 --- !u!4 &1813862293 stripped
 Transform:
@@ -35027,7 +35029,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -35042,9 +35044,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 445379466}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2a0fbb9a16b43ffb1cbbd9ba45324ca, type: 3}
+  m_Script: {fileID: 11500000, guid: a3920422e1954cf08013f7394c4d29fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 1089582148}
 --- !u!1001 &1825250858
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36146,7 +36149,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -36161,9 +36164,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1945732242}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2a0fbb9a16b43ffb1cbbd9ba45324ca, type: 3}
+  m_Script: {fileID: 11500000, guid: a3920422e1954cf08013f7394c4d29fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 1089582148}
 --- !u!1001 &1945821710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42619,10 +42623,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1000011365394840, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 98442362}
+      addedObject: {fileID: 98442361}
     - targetCorrespondingSourceObject: {fileID: 1000011365394840, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 98442361}
+      addedObject: {fileID: 98442362}
   m_SourcePrefab: {fileID: 100100000, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
 --- !u!1 &2140615102
 GameObject:

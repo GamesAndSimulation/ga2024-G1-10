@@ -1,8 +1,8 @@
-using UnityEngine;
-
-namespace props_management
+namespace props_positioning
 {
-    public class DimensionalPotion : MonoBehaviour
+    using UnityEngine;
+
+    public class CoinCollision : MonoBehaviour
     {
         void OnCollisionEnter(Collision collision)
         {
@@ -11,9 +11,9 @@ namespace props_management
                 PlayerStats playerStats = collision.gameObject.GetComponent<PlayerStats>();
                 if (playerStats != null)
                 {
-                    playerStats.hasDimensionSwitch = true;
-                    Destroy(gameObject); // Destroy the potion object
-                    Debug.Log("Gun picked up!");
+                    Destroy(gameObject); // Destroy the coin object
+                    playerStats.CollectCoin();
+                    Debug.Log("coin picked up!");
                 }
             }
         }

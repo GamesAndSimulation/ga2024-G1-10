@@ -2,7 +2,7 @@ namespace Project.Internal.Scripts.Enemies.reverse_power
 {
     using UnityEngine;
 
-    public class TeleportationManager : MonoBehaviour
+    public class ShortcutManager : MonoBehaviour
     {
         void Update()
         {
@@ -16,10 +16,6 @@ namespace Project.Internal.Scripts.Enemies.reverse_power
                 TeleportTo("GunCheckpoint");
             }
             else if (Input.GetKey(KeyCode.Alpha3))
-            {
-                TeleportTo("LakeCheckpoint");
-            }
-            else if (Input.GetKey(KeyCode.Alpha4))
             {
                 TeleportTo("PlatformColumnCheckpoint");
             }
