@@ -10,6 +10,8 @@ public class PlayerStats : CharacterStats
 
     // New properties
     private Vector3 _lastCheckpoint;
+    private int _coinCount; // Variable to keep track of the number of coins
+    private const int _totalCoins = 4; // Total number of coins
 
     public bool hasGun;
 
@@ -24,32 +26,29 @@ public class PlayerStats : CharacterStats
     }
 
     public bool hasDimensionSwitch;
-    
+
     public bool HasDimensionSwitch
     {
         get => hasDimensionSwitch;
         set => hasDimensionSwitch = value;
     }
 
-
     public bool hasReversePower;
-
-
     public bool hasFreezePower;
-
 
     private void Start()
     {
         InitVariables();
         GetReferences();
         Alive();
+        UpdateHUD();
     }
 
     private void GetReferences()
     {
         if (hud == null)
         {
-            if (!TryGetComponent<PHUD>(out hud))
+            if (!TryGetComponent(out hud))
             {
                 Debug.LogError("PHUD component not found on the same GameObject.");
             }
@@ -86,16 +85,28 @@ public class PlayerStats : CharacterStats
         }
     }
 
-    public override void Alive()
+    public void CollectCoin()
     {
-        base.Alive();
+        _coinCount++;
+        UpdateHUD();
+    }
+
+    private void UpdateHUD()
+    {
         if (hud != null)
         {
             hud.UpdateHealth(health, maxHealth);
+            hud.UpdateCoins(_coinCount, _totalCoins); // Assuming PHUD has a method to update coins
         }
         else
         {
             Debug.LogError("HUD reference is null.");
         }
+    }
+
+    public override void Alive()
+    {
+        base.Alive();
+        UpdateHUD();
     }
 }
