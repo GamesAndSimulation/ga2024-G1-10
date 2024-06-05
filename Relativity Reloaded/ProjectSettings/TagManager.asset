@@ -11,6 +11,10 @@ TagManager:
   - NoSpawn
   - CinemachineTarget
   - FirstOrcGang
+  - Bullet
+  - Collider
+  - Boss
+  - HeadShot
   layers:
   - Default
   - TransparentFX

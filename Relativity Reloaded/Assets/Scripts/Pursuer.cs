@@ -8,8 +8,8 @@ namespace Project.Internal.Scripts.Enemies
         private Animator _animator;
         public float speed = 2f;
         public float rotationSpeed = 200f;
-        public float triggerRadius = 10f; // Trigger radius
-        public float attackRadius = 2f; // Attack radius
+        public float triggerRadius = 10f;
+        public float attackRadius = 2f;
 
         private Rigidbody _rb;
         private static readonly int Attack = Animator.StringToHash("canAttack");
@@ -86,8 +86,17 @@ namespace Project.Internal.Scripts.Enemies
                 PlayerStats playerStats = collision.gameObject.GetComponent<PlayerStats>();
                 if (playerStats != null)
                 {
+                    Debug.Log("Player collided with enemy and isAttacking is true. Applying damage.");
                     playerStats.TakeDamage(1);
                 }
+                else
+                {
+                    Debug.Log("PlayerStats component not found on Player.");
+                }
+            }
+            else
+            {
+                Debug.Log("Collision detected but isAttacking is false or other object.");
             }
         }
     }

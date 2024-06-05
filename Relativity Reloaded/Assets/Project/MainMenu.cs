@@ -12,6 +12,12 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void ChaosGame()
+    {
+        SceneManager.LoadScene(6);
+    }
+
+
     public void QuitGame() 
     {
         Application.Quit();

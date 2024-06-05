@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerStats : CharacterStats
 {
     [SerializeField] private PHUD hud;
+    [SerializeField] GameObject enemy;
     public GameObject handheldGun; // Reference to the handheld gun object
     [SerializeField] private Material freezePowerMaterial; // Reference to the freeze power material
 

@@ -21,6 +21,15 @@ public class Bullet : MonoBehaviour
             }
         }
 
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            var pStats = collision.gameObject.GetComponent<PlayerStats>();
+            if (pStats != null)
+            {
+                pStats.TakeDamage(1);
+            }
+        }
+
         Destroy(gameObject);
     }
 }
