@@ -24,6 +24,9 @@ public class EnemyFollow : MonoBehaviour
     public float stopRange = 7f;
     private int health = 3;
 
+    public GameManager gameManager;
+    public GameManagerChaos gameManagerChaos;
+
     public AudioSource bossDeathSound;
     public AudioSource bossDamageSound;
     public AudioSource bossGiantSound;
@@ -207,7 +210,16 @@ public class EnemyFollow : MonoBehaviour
                     {
                         _animator.SetBool(Die, true);
                         bossDeathSound.Play();
-                        StartCoroutine(FinalSceneLoad(2.0f));
+                        if (gameManager != null)
+                        {
+                            StartCoroutine(FinalSceneLoad(2.0f));
+                        }
+
+                        if (gameManagerChaos != null)
+                        {
+                            gameManagerChaos.ManDied();
+                        }
+                     
                     }
                 }
             }

@@ -2435,6 +2435,8 @@ MonoBehaviour:
   rotationSpeed: 200
   attackRange: 7
   stopRange: 7
+  gameManager: {fileID: 0}
+  gameManagerChaos: {fileID: 1799507855}
   bossDeathSound: {fileID: 1979386155}
   bossDamageSound: {fileID: 2039169836}
   bossGiantSound: {fileID: 2116800146}
@@ -8087,6 +8089,7 @@ MonoBehaviour:
   gameManagerChaos: {fileID: 1799507855}
   damageSound: {fileID: 293229132}
   hud: {fileID: 387110359}
+  enemy: {fileID: 0}
 --- !u!114 &1089582150
 MonoBehaviour:
   m_ObjectHideFlags: 0

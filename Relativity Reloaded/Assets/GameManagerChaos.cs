@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 
 public class GameManagerChaos : MonoBehaviour
@@ -12,7 +14,20 @@ public class GameManagerChaos : MonoBehaviour
     public AudioSource deathMusic;
     public AudioSource bossMusic;
 
+    public static int score;
+    private void Start()
+    {
+        score = 0;
+    }
+    public void ManDied()
+    {
+        score = score + 1;
+    }
 
+    public int ReturnScore() 
+    {
+        return score;
+    }
     public void EndGame(bool gameHasEnded)
     {
         failLevelUI.SetActive(true);

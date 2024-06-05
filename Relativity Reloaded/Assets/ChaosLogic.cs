@@ -18,6 +18,7 @@ public class ChaosLogic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         timer = spawnInterval; // Initialize timer
     }
 

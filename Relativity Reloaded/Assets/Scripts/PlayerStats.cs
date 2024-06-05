@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerStats : CharacterStats
 {
     [SerializeField] private PHUD hud;
+    [SerializeField] GameObject enemy;
 
     private void Start()
     {
