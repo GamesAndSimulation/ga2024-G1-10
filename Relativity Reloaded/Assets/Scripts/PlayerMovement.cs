@@ -5,17 +5,20 @@ using UnityEngine.Serialization;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Movement Settings")] public float speed = 5f;
+    [Header("Movement Settings")]
+    public float speed = 5f;
     public float runSpeed = 10f;
     public float rotationSpeed = 700f;
     public float mouseSensitivity = 300f;
     public float jumpForce = 10f;
 
-    [Header("Camera Settings")] public Transform cameraPivot;
+    [Header("Camera Settings")]
+    public Transform cameraPivot;
     public CinemachineVirtualCamera camera1;
     public CinemachineVirtualCamera camera2;
 
-    [Header("Character Settings")] private Rigidbody _rigidBody;
+    [Header("Character Settings")]
+    private Rigidbody _rigidBody;
     private Transform _physicalBody;
     public Animator animator;
     private bool _isAiming;
@@ -24,11 +27,17 @@ public class PlayerMovement : MonoBehaviour
     private float _rotationX;
     private float _rotationY;
 
-    [FormerlySerializedAs("_isSkyboxToggled")] [SerializeField]
+    [FormerlySerializedAs("_isSkyboxToggled")]
+    [SerializeField]
     private bool isSkyboxToggled; // Track whether the skybox is toggled or not
 
     public readonly Dictionary<Vector2Int, float> OriginalHeights = new Dictionary<Vector2Int, float>();
     public AudioSource walkingSound;
+
+    private PlayerStats _playerStats;
+    private bool isFreeCameraActive = false;
+    private Vector3 playerPositionBeforeFreeCamera;
+    private Quaternion playerRotationBeforeFreeCamera;
 
     void Start()
     {
@@ -48,14 +57,76 @@ public class PlayerMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         camera1.gameObject.SetActive(true);
         camera2.gameObject.SetActive(false);
+
+        _playerStats = GetComponent<PlayerStats>();
+        if (_playerStats == null)
+        {
+            Debug.LogError("PlayerStats component missing from the player.");
+        }
     }
 
     void Update()
     {
-        HandleMovement();
-        HandleRotation();
-        HandleJump();
-        HandleAiming();
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            ToggleFreeCamera();
+        }
+
+        if (isFreeCameraActive)
+        {
+            HandleFreeCameraMovement();
+        }
+        else
+        {
+            HandleMovement();
+            HandleRotation();
+            HandleJump();
+            HandleAiming();
+        }
+    }
+
+    private void ToggleFreeCamera()
+    {
+        isFreeCameraActive = !isFreeCameraActive;
+
+        if (isFreeCameraActive)
+        {
+            // Store player's position and rotation before switching to free camera
+            playerPositionBeforeFreeCamera = cameraPivot.position;
+            playerRotationBeforeFreeCamera = cameraPivot.rotation;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            // Reset camera position and rotation to player's position and rotation
+            cameraPivot.position = playerPositionBeforeFreeCamera;
+            cameraPivot.rotation = playerRotationBeforeFreeCamera;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
+    private void HandleFreeCameraMovement()
+    {
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
+        float moveUp = 0f;
+        if (Input.GetKey(KeyCode.E)) moveUp = 1f;
+        if (Input.GetKey(KeyCode.Q)) moveUp = -1f;
+
+        Vector3 moveDirection = (cameraPivot.forward * moveVertical + 
+                                 cameraPivot.right * moveHorizontal +
+                                 cameraPivot.up * moveUp).normalized * (speed * Time.deltaTime);
+
+        cameraPivot.position += moveDirection;
+
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
+        _rotationX += mouseX;
+        _rotationY -= mouseY;
+        _rotationY = Mathf.Clamp(_rotationY, -90f, 90f);
+
+        cameraPivot.localRotation = Quaternion.Euler(_rotationY, _rotationX, 0f);
     }
 
     public bool IsAiming()
@@ -143,19 +214,28 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleAiming()
     {
-        _isAiming = Input.GetMouseButton(1); // Right mouse button
-
-        if (_isAiming)
+        if (_playerStats != null && _playerStats.HasGun)
         {
-            camera1.gameObject.SetActive(false);
-            camera2.gameObject.SetActive(true);
+            _isAiming = Input.GetMouseButton(1); // Right mouse button
+
+            if (_isAiming)
+            {
+                camera1.gameObject.SetActive(false);
+                camera2.gameObject.SetActive(true);
+            }
+            else
+            {
+                camera1.gameObject.SetActive(true);
+                camera2.gameObject.SetActive(false);
+            }
+
+            Debug.Log($"Aiming status: {_isAiming}");
         }
         else
         {
+            _isAiming = false;
             camera1.gameObject.SetActive(true);
             camera2.gameObject.SetActive(false);
         }
-
-        Debug.Log($"Aiming status: {_isAiming}");
     }
 }

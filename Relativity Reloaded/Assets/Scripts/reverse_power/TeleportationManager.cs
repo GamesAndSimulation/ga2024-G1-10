@@ -7,19 +7,19 @@ namespace Project.Internal.Scripts.Enemies.reverse_power
         void Update()
         {
             // Check for key presses and teleport accordingly
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            if (Input.GetKey(KeyCode.Alpha1))
             {
                 TeleportTo("BeginningCheckpoint");
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            else if (Input.GetKey(KeyCode.Alpha2))
             {
                 TeleportTo("GunCheckpoint");
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            else if (Input.GetKey(KeyCode.Alpha3))
             {
                 TeleportTo("LakeCheckpoint");
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha4))
+            else if (Input.GetKey(KeyCode.Alpha4))
             {
                 TeleportTo("PlatformColumnCheckpoint");
             }
