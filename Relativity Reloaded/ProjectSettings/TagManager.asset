@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Dimensional
   - NoSpawn
+  - CinemachineTarget
+  - FirstOrcGang
   layers:
   - Default
   - TransparentFX

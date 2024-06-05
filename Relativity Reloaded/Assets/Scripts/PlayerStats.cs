@@ -5,23 +5,17 @@ using UnityEngine;
 public class PlayerStats : CharacterStats
 {
     [SerializeField] private PHUD hud;
-
     public GameObject handheldGun; // Reference to the handheld gun object
+    [SerializeField] private Material freezePowerMaterial; // Reference to the freeze power material
 
     // New properties
-    private Vector3 lastCheckpoint;
+    private Vector3 _lastCheckpoint;
 
-    public Vector3 LastCheckpoint
-    {
-        get { return lastCheckpoint; }
-        set { lastCheckpoint = value; }
-    }
-
-    private bool hasGun;
+    public bool hasGun;
 
     public bool HasGun
     {
-        get { return hasGun; }
+        get => hasGun;
         set
         {
             hasGun = value;
@@ -29,29 +23,20 @@ public class PlayerStats : CharacterStats
         }
     }
 
-    private bool hasDimensionSwitch;
-
+    public bool hasDimensionSwitch;
+    
     public bool HasDimensionSwitch
     {
-        get { return hasDimensionSwitch; }
-        set { hasDimensionSwitch = value; }
+        get => hasDimensionSwitch;
+        set => hasDimensionSwitch = value;
     }
 
-    private bool hasReversePower;
 
-    public bool HasReversePower
-    {
-        get { return hasReversePower; }
-        set { hasReversePower = value; }
-    }
+    public bool hasReversePower;
 
-    private bool hasFreezePower;
 
-    public bool HasFreezePower
-    {
-        get { return hasFreezePower; }
-        set { hasFreezePower = value; }
-    }
+    public bool hasFreezePower;
+
 
     private void Start()
     {
@@ -81,6 +66,23 @@ public class PlayerStats : CharacterStats
         if (handheldGun != null)
         {
             handheldGun.SetActive(hasGun);
+        }
+    }
+
+    private void UpdateFreezePowerStatus()
+    {
+        if (hasFreezePower && handheldGun != null)
+        {
+            // Assuming the gun pipe is a child of the handheld gun
+            Renderer gunRenderer = handheldGun.GetComponentInChildren<Renderer>();
+            if (gunRenderer != null)
+            {
+                gunRenderer.material = freezePowerMaterial;
+            }
+            else
+            {
+                Debug.LogError("Gun Renderer not found.");
+            }
         }
     }
 

@@ -9,6 +9,7 @@ namespace Project.Internal.Scripts.Enemies.player
         public Material toggledSkybox; // Reference to the toggled skybox
 
         private bool _isSkyboxToggled = false; // Track whether the skybox is toggled or not
+        private PlayerStats playerStats; // Reference to the PlayerStats component
 
         void Start()
         {
@@ -16,6 +17,13 @@ namespace Project.Internal.Scripts.Enemies.player
             if (originalSkybox != null)
             {
                 RenderSettings.skybox = originalSkybox;
+            }
+
+            // Find the PlayerStats component
+            playerStats = GetComponent<PlayerStats>();
+            if (playerStats == null)
+            {
+                Debug.LogError("PlayerStats component not found on the player.");
             }
         }
 
@@ -26,7 +34,7 @@ namespace Project.Internal.Scripts.Enemies.player
 
         private void HandleDimensionalToggle()
         {
-            if (Input.GetKeyDown(toggleKey))
+            if (Input.GetKeyDown(toggleKey) && playerStats != null && playerStats.HasDimensionSwitch)
             {
                 DimensionalObjectManager.Instance.ToggleDimensionalObjects();
                 ToggleSkybox();
