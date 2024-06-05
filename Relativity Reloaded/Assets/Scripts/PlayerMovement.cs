@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Settings")]
     public float speed = 5f;
     public float runSpeed = 10f;
+    public float freeCameraSpeed = 7f; // Speed for free camera movement
+    public float freeCameraRunSpeed = 14f; // Run speed for free camera movement
     public float rotationSpeed = 700f;
     public float mouseSensitivity = 300f;
     public float jumpForce = 10f;
@@ -16,6 +18,9 @@ public class PlayerMovement : MonoBehaviour
     public Transform cameraPivot;
     public CinemachineVirtualCamera camera1;
     public CinemachineVirtualCamera camera2;
+
+    [Header("UI Settings")]
+    public GameObject crossHair; // Reference to the CrossHair GameObject
 
     [Header("Character Settings")]
     private Rigidbody _rigidBody;
@@ -35,9 +40,13 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource walkingSound;
 
     private PlayerStats _playerStats;
-    private bool isFreeCameraActive = false;
-    private Vector3 playerPositionBeforeFreeCamera;
-    private Quaternion playerRotationBeforeFreeCamera;
+    private bool _isFreeCameraActive = false;
+    private bool _isGamePaused = false;
+    private Vector3 _cameraLocalPositionBeforeFreeCamera;
+    private Quaternion _cameraLocalRotationBeforeFreeCamera;
+
+    private List<Animator> animators = new List<Animator>();
+    private List<Rigidbody> rigidbodies = new List<Rigidbody>();
 
     void Start()
     {
@@ -57,12 +66,15 @@ public class PlayerMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         camera1.gameObject.SetActive(true);
         camera2.gameObject.SetActive(false);
+        crossHair.SetActive(true);
 
         _playerStats = GetComponent<PlayerStats>();
         if (_playerStats == null)
         {
             Debug.LogError("PlayerStats component missing from the player.");
         }
+
+        FindAllAnimatorsAndRigidbodies();
     }
 
     void Update()
@@ -72,11 +84,16 @@ public class PlayerMovement : MonoBehaviour
             ToggleFreeCamera();
         }
 
-        if (isFreeCameraActive)
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            TogglePauseGame();
+        }
+
+        if (_isFreeCameraActive)
         {
             HandleFreeCameraMovement();
         }
-        else
+        else if (!_isGamePaused)
         {
             HandleMovement();
             HandleRotation();
@@ -85,28 +102,69 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void FindAllAnimatorsAndRigidbodies()
+    {
+        animators.AddRange(FindObjectsOfType<Animator>());
+        rigidbodies.AddRange(FindObjectsOfType<Rigidbody>());
+    }
+
     private void ToggleFreeCamera()
     {
-        isFreeCameraActive = !isFreeCameraActive;
+        _isFreeCameraActive = !_isFreeCameraActive;
 
-        if (isFreeCameraActive)
+        if (_isFreeCameraActive)
         {
-            // Store player's position and rotation before switching to free camera
-            playerPositionBeforeFreeCamera = cameraPivot.position;
-            playerRotationBeforeFreeCamera = cameraPivot.rotation;
+            // Store camera's local position and rotation before switching to free camera
+            _cameraLocalPositionBeforeFreeCamera = cameraPivot.localPosition;
+            _cameraLocalRotationBeforeFreeCamera = cameraPivot.localRotation;
             Cursor.lockState = CursorLockMode.None;
+            crossHair.SetActive(false); // Disable CrossHair in free camera mode
         }
         else
         {
-            // Reset camera position and rotation to player's position and rotation
-            cameraPivot.position = playerPositionBeforeFreeCamera;
-            cameraPivot.rotation = playerRotationBeforeFreeCamera;
+            // Reset camera local position and rotation to its original state
+            cameraPivot.localPosition = _cameraLocalPositionBeforeFreeCamera;
+            cameraPivot.localRotation = _cameraLocalRotationBeforeFreeCamera;
             Cursor.lockState = CursorLockMode.Locked;
+            crossHair.SetActive(true); // Enable CrossHair when exiting free camera mode
+        }
+    }
+
+    private void TogglePauseGame()
+    {
+        _isGamePaused = !_isGamePaused;
+
+        if (_isGamePaused)
+        {
+            foreach (var animator in animators)
+            {
+                animator.enabled = false;
+            }
+            foreach (var rb in rigidbodies)
+            {
+                rb.isKinematic = true;
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+        }
+        else
+        {
+            foreach (var animator in animators)
+            {
+                animator.enabled = true;
+            }
+            foreach (var rb in rigidbodies)
+            {
+                rb.isKinematic = false;
+            }
         }
     }
 
     private void HandleFreeCameraMovement()
     {
+        bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        float currentSpeed = isRunning ? freeCameraRunSpeed : freeCameraSpeed;
+
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
         float moveUp = 0f;
@@ -115,12 +173,12 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDirection = (cameraPivot.forward * moveVertical + 
                                  cameraPivot.right * moveHorizontal +
-                                 cameraPivot.up * moveUp).normalized * (speed * Time.deltaTime);
+                                 cameraPivot.up * moveUp).normalized * (currentSpeed * Time.unscaledDeltaTime);
 
         cameraPivot.position += moveDirection;
 
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.unscaledDeltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.unscaledDeltaTime;
 
         _rotationX += mouseX;
         _rotationY -= mouseY;
