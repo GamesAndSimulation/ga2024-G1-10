@@ -11,7 +11,7 @@ public class PlayerStats : CharacterStats
     // New properties
     private Vector3 _lastCheckpoint;
     private int _coinCount; // Variable to keep track of the number of coins
-    private const int _totalCoins = 4; // Total number of coins
+    private const int _totalCoins = 5; // Total number of coins
 
     public bool hasGun;
 
@@ -91,12 +91,30 @@ public class PlayerStats : CharacterStats
         UpdateHUD();
     }
 
+    public void SetCoinCount(int coinCount)
+    {
+        _coinCount = coinCount;
+        UpdateHUD();
+    }
+
+    public void SetFreezePower(bool hasFreezePower)
+    {
+        this.hasFreezePower = hasFreezePower;
+        UpdateFreezePowerStatus();
+        UpdateHUD();
+    }
+
+    public bool HasAllCoins()
+    {
+        return _coinCount >= _totalCoins;
+    }
+
     private void UpdateHUD()
     {
         if (hud != null)
         {
             hud.UpdateHealth(health, maxHealth);
-            hud.UpdateCoins(_coinCount, _totalCoins); // Assuming PHUD has a method to update coins
+            hud.UpdateCoins(_coinCount, _totalCoins); // Update the coin count
         }
         else
         {

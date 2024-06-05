@@ -4,6 +4,17 @@ namespace Project.Internal.Scripts.Enemies.reverse_power
 
     public class ShortcutManager : MonoBehaviour
     {
+        private PlayerStats playerStats;
+
+        void Start()
+        {
+            playerStats = GetComponent<PlayerStats>();
+            if (playerStats == null)
+            {
+                Debug.LogError("PlayerStats component not found on the player.");
+            }
+        }
+
         void Update()
         {
             // Check for key presses and teleport accordingly
@@ -17,7 +28,17 @@ namespace Project.Internal.Scripts.Enemies.reverse_power
             }
             else if (Input.GetKey(KeyCode.Alpha3))
             {
-                TeleportTo("PlatformColumnCheckpoint");
+                TeleportTo("Moving_plat_Checkpoint");
+            }
+            else if (Input.GetKey(KeyCode.Alpha4) && playerStats != null)
+            {
+                playerStats.SetCoinCount(5); // Set to the maximum number of coins
+                Debug.Log("All coins collected!");
+            }
+            else if (Input.GetKey(KeyCode.Alpha5) && playerStats != null)
+            {
+                playerStats.SetFreezePower(true); // Grant freeze power
+                Debug.Log("Freeze power obtained!");
             }
         }
 
@@ -35,5 +56,4 @@ namespace Project.Internal.Scripts.Enemies.reverse_power
             }
         }
     }
-
 }

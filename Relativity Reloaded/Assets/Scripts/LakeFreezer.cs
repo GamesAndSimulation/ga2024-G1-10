@@ -8,6 +8,7 @@ public class LakeFreezer : MonoBehaviour
 
     private LowPolyWater.LowPolyWater waterMovementScript; // Reference to the LowPolyWater script
     private MeshRenderer meshRenderer; // Reference to the MeshRenderer component
+    private PlayerStats playerStats; // Reference to the PlayerStats script
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +16,13 @@ public class LakeFreezer : MonoBehaviour
         // Automatically find the LowPolyWater script in the same GameObject
         waterMovementScript = GetComponent<LowPolyWater.LowPolyWater>();
         meshRenderer = GetComponent<MeshRenderer>();
+
+        // Find the PlayerStats component in the player GameObject
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player != null)
+        {
+            playerStats = player.GetComponent<PlayerStats>();
+        }
 
         if (originalMaterial == null || frozenMaterial == null)
         {
@@ -26,6 +34,11 @@ public class LakeFreezer : MonoBehaviour
         {
             Debug.LogError("LowPolyWater script not found on the GameObject.");
         }
+
+        if (playerStats == null)
+        {
+            Debug.LogError("PlayerStats component not found in the player GameObject.");
+        }
     }
 
     // Update is called once per frame
@@ -33,13 +46,13 @@ public class LakeFreezer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if (isFrozen)
-            {
-                UnfreezeLake();
-            }
-            else
+            if (playerStats != null && playerStats.HasAllCoins() && !isFrozen)
             {
                 FreezeLake();
+            }
+            else if (isFrozen)
+            {
+                UnfreezeLake();
             }
         }
     }
