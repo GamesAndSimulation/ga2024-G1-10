@@ -2463,23 +2463,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 3
---- !u!114 &723420204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 723420199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7536370076fbc434aa561eb260131476, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1089582142}
-  speed: 2
-  rotationSpeed: 200
-  triggerRadius: 10
-  attackRadius: 2
 --- !u!54 &723420206
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3353,6 +3336,7 @@ MonoBehaviour:
   camera1: {fileID: 90189525}
   camera2: {fileID: 350781307}
   toggleKey: 116
+  particleSystem: {fileID: 0}
   originalSkybox: {fileID: 0}
   toggledSkybox: {fileID: 0}
   reversalKey: 122
@@ -4424,9 +4408,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7673487251499248760, guid: c98043d57e0190845b790d7b92990bee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 723420206}
-    - targetCorrespondingSourceObject: {fileID: 7673487251499248760, guid: c98043d57e0190845b790d7b92990bee, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 723420204}
     - targetCorrespondingSourceObject: {fileID: 7673487251499248760, guid: c98043d57e0190845b790d7b92990bee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 723420203}
