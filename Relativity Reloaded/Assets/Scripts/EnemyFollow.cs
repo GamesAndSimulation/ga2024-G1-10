@@ -180,7 +180,7 @@ public class EnemyFollow : MonoBehaviour
     private IEnumerator FinalSceneLoad(float duration)
     {
         yield return new WaitForSeconds(duration);
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(5);
     }
 
     void OnCollisionEnter(Collision collision)
