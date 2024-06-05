@@ -1,3 +1,5 @@
+using dimensions;
+
 namespace Project.Internal.Scripts.Enemies.player
 {
     using UnityEngine;

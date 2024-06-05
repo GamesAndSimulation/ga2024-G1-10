@@ -1,3 +1,4 @@
+using dimensions;
 using UnityEngine;
 
 public class LakeFreezer : MonoBehaviour
@@ -10,6 +11,7 @@ public class LakeFreezer : MonoBehaviour
     private LowPolyWater.LowPolyWater waterMovementScript; // Reference to the LowPolyWater script
     private MeshRenderer meshRenderer; // Reference to the MeshRenderer component
     private PlayerStats playerStats; // Reference to the PlayerStats script
+    private DimensionZone dimensionZone; // Reference to the DimensionZone script
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +25,13 @@ public class LakeFreezer : MonoBehaviour
         if (player != null)
         {
             playerStats = player.GetComponent<PlayerStats>();
+        }
+
+        // Find the DimensionZone component
+        if (waterInvisibleWall != null)
+        {
+            Debug.Log("Found waterInvisibleWall");
+            dimensionZone = waterInvisibleWall.GetComponent<DimensionZone>();
         }
 
         if (originalMaterial == null || frozenMaterial == null)
@@ -41,9 +50,9 @@ public class LakeFreezer : MonoBehaviour
             Debug.LogError("PlayerStats component not found in the player GameObject.");
         }
 
-        if (waterInvisibleWall == null)
+        if (dimensionZone == null)
         {
-            Debug.LogError("WaterInvisibleWall GameObject not assigned.");
+            Debug.LogError("DimensionZone component not found on the cube.");
         }
     }
 
@@ -57,10 +66,15 @@ public class LakeFreezer : MonoBehaviour
                 Debug.Log("Freezing the lake...");
                 FreezeLake();
             }
-            else if (isFrozen)
+            else if (isFrozen && (dimensionZone == null || !dimensionZone.IsPlayerInside(playerStats.transform.position)))
             {
                 UnfreezeLake();
-            } else if (!playerStats.hasFreezePower)
+            }
+            else if (isFrozen)
+            {
+                Debug.Log("Cannot unfreeze the lake while inside the cube boundaries.");
+            }
+            else if (!playerStats.hasFreezePower)
             {
                 Debug.Log("Cannot freeze the lake. Collect all coins first.");
             }

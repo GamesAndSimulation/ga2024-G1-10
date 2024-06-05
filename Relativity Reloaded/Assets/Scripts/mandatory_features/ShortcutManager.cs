@@ -40,6 +40,17 @@ namespace Project.Internal.Scripts.Enemies.reverse_power
                 playerStats.SetFreezePower(true); // Grant freeze power
                 Debug.Log("Freeze power obtained!");
             }
+            else if (Input.GetKey(KeyCode.Alpha6) && playerStats != null)
+            {
+                playerStats.HasDimensionSwitch = true; // Grant dimensional power
+                Debug.Log("Dimensional power obtained!");
+            }
+            else if (Input.GetKey(KeyCode.Alpha7) && playerStats != null)
+            {
+                playerStats.HasGun = true; // Grant gun
+                playerStats.UpdateGunStatus();
+                Debug.Log("Gun obtained!");
+            }
         }
 
         void TeleportTo(string checkpointName)

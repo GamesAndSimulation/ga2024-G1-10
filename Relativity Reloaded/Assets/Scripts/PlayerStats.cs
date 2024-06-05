@@ -13,8 +13,7 @@ public class PlayerStats : CharacterStats
     private int _coinCount; // Variable to keep track of the number of coins
     private const int _totalCoins = 5; // Total number of coins
 
-    public bool hasGun;
-
+    private bool hasGun;
     public bool HasGun
     {
         get => hasGun;
@@ -26,7 +25,6 @@ public class PlayerStats : CharacterStats
     }
 
     public bool hasDimensionSwitch;
-
     public bool HasDimensionSwitch
     {
         get => hasDimensionSwitch;
@@ -60,7 +58,7 @@ public class PlayerStats : CharacterStats
         }
     }
 
-    private void UpdateGunStatus()
+    public void UpdateGunStatus()
     {
         if (handheldGun != null)
         {
