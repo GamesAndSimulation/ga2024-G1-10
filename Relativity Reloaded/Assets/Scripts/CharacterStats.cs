@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Project.Internal.Scripts.Enemies;
 using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
