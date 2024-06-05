@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Cinemachine;
+using System.Collections;
 using Project.Internal.Scripts.Enemies.reverse_power;
 
 public class PlayerMovement : MonoBehaviour
@@ -34,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Dimensional Toggle Settings")]
     public KeyCode toggleKey = KeyCode.T;
+    public ParticleSystem particleSystem;
 
     [Header("Skybox Settings")]
     public Material originalSkybox; // Reference to the original skybox
@@ -106,7 +108,15 @@ public class PlayerMovement : MonoBehaviour
         {
             DimensionalObjectManager.Instance.ToggleDimensionalObjects();
             ToggleSkybox();
+            StartCoroutine(PlayParticleSystemForDuration(1.0f));
         }
+    }
+
+    private IEnumerator PlayParticleSystemForDuration(float duration)
+    {
+        particleSystem.Play();
+        yield return new WaitForSeconds(duration);
+        particleSystem.Stop();
     }
 
     private void ToggleSkybox()
