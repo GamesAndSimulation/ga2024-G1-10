@@ -8,7 +8,7 @@ public class LoadAfterIntro : MonoBehaviour
     {
         timeElapsed += Time.deltaTime;
         if (timeElapsed > delayBeforeLoading) {
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(4);
         }
     }
 }

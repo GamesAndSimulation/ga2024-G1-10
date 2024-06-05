@@ -14,7 +14,7 @@ public class PlayerStats : CharacterStats
     private int _coinCount; // Variable to keep track of the number of coins
     private const int _totalCoins = 5; // Total number of coins
 
-    private bool hasGun;
+    public bool hasGun;
     public bool HasGun
     {
         get => hasGun;

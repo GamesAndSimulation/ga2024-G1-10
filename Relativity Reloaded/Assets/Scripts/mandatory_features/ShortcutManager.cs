@@ -51,6 +51,10 @@ namespace Project.Internal.Scripts.Enemies.reverse_power
                 playerStats.UpdateGunStatus();
                 Debug.Log("Gun obtained!");
             }
+            else if (Input.GetKey(KeyCode.Alpha8))
+            {
+                TeleportTo("Boss Checkpoint");
+            }
         }
 
         void TeleportTo(string checkpointName)

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276841, g: 0.21589246, b: 0.29782617, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1389,6 +1389,7 @@ MonoBehaviour:
   currentHealthText: {fileID: 1154570691}
   maxHealthText: {fileID: 1114645525}
   HUDImage: {fileID: 387110357}
+  coinText: {fileID: 0}
 --- !u!1001 &392432026
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2241,6 +2242,12 @@ MonoBehaviour:
   rotationSpeed: 200
   attackRange: 7
   stopRange: 7
+  gameManager: {fileID: 0}
+  gameManagerChaos: {fileID: 0}
+  bossDeathSound: {fileID: 0}
+  bossDamageSound: {fileID: 0}
+  bossGiantSound: {fileID: 0}
+  bossLiteSound: {fileID: 0}
 --- !u!199 &723420213
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -7848,26 +7855,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   runSpeed: 10
+  freeCameraSpeed: 7
+  freeCameraRunSpeed: 14
   rotationSpeed: 700
   mouseSensitivity: 300
   jumpForce: 10
-  glideKey: 103
-  glideGravity: 2
-  terrain: {fileID: 0}
-  power: 0.2
-  radius: 10
-  minRadius: 10
-  maxRadius: 15
-  raiseKey: 114
-  lowerKey: 102
   cameraPivot: {fileID: 170728578}
   camera1: {fileID: 90189525}
   camera2: {fileID: 350781307}
-  toggleKey: 116
-  particleSystem: {fileID: 0}
-  originalSkybox: {fileID: 0}
-  toggledSkybox: {fileID: 0}
-  reversalKey: 122
+  crossHair: {fileID: 0}
   animator: {fileID: 415573886}
   walkingSound: {fileID: 0}
 --- !u!114 &1089582148
@@ -7886,8 +7882,16 @@ MonoBehaviour:
   maxHealth: 0
   isDead: 0
   gameManager: {fileID: 1799507852}
+  gameManagerChaos: {fileID: 0}
   damageSound: {fileID: 293229132}
   hud: {fileID: 387110359}
+  enemy: {fileID: 0}
+  handheldGun: {fileID: 0}
+  freezePowerMaterial: {fileID: 0}
+  hasGun: 1
+  hasDimensionSwitch: 0
+  hasReversePower: 0
+  hasFreezePower: 0
 --- !u!114 &1089582150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7904,6 +7908,7 @@ MonoBehaviour:
   maxHealth: 0
   isDead: 0
   gameManager: {fileID: 1799507852}
+  gameManagerChaos: {fileID: 0}
   damageSound: {fileID: 0}
 --- !u!1 &1090289808
 GameObject:
@@ -9450,6 +9455,26 @@ PrefabInstance:
     - target: {fileID: 450040, guid: 530f5ce44fdac4197a29f5bec8818d85, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 10844700, guid: 530f5ce44fdac4197a29f5bec8818d85, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 10844700, guid: 530f5ce44fdac4197a29f5bec8818d85, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 10844700, guid: 530f5ce44fdac4197a29f5bec8818d85, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 10844700, guid: 530f5ce44fdac4197a29f5bec8818d85, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 10844700, guid: 530f5ce44fdac4197a29f5bec8818d85, type: 3}
+      propertyPath: m_Intensity
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

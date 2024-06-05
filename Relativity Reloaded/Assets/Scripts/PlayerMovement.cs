@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Cinemachine;
 using Project.Internal.Scripts.Enemies.player;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -37,11 +38,14 @@ public class PlayerMovement : MonoBehaviour
     private bool _isAiming;
     private float _rotationX;
     private float _rotationY;
+    private bool _modulesInitialized = false;
 
     private void Start()
     {
         InitializeComponents();
         InitializeModules();
+        
+        Debug.Log("CREATION");        
 
         _playerInput.OnToggleFreeCamera += _playerCamera.ToggleFreeCamera;
         _playerInput.OnTogglePauseGame += _playerPause.TogglePauseGame;
@@ -49,6 +53,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (SceneManager.GetActiveScene().name == "FinalBossLevel" && !_modulesInitialized)
+        {
+            InitializeModules();
+            _modulesInitialized = true;
+        }
+        
         _playerInput.CheckInput();
 
         if (_playerCamera.IsFreeCameraActive)
@@ -197,6 +207,9 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            Debug.Log("player_stats: " + _playerStats);
+            Debug.Log("player_stats.HasGun: " + _playerStats.HasGun);
+            
             _isAiming = false;
             camera1.gameObject.SetActive(true);
             camera2.gameObject.SetActive(false);

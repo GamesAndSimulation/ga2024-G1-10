@@ -1,45 +1,41 @@
-namespace Project.Internal.Scripts.Enemies
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
+
+
+public class GameManagerChaos : MonoBehaviour
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using UnityEngine.SceneManagement;
-    using UnityEngine.UI;
-    using TMPro;
+    public float restartDelay = 2f;
+    public GameObject failLevelUI;
+    public AudioSource deathMusic;
+    public AudioSource bossMusic;
 
+    public static int score;
 
-    public class GameManagerChaos : MonoBehaviour
+    private void Start()
     {
-
-        public float restartDelay = 2f;
-        public GameObject failLevelUI;
-        public AudioSource deathMusic;
-        public AudioSource bossMusic;
-
-        public static int score;
-        private void Start()
-        {
-            score = 0;
-        }
-        public void ManDied()
-        {
-            score = score + 1;
-        }
-
-        public int ReturnScore() 
-        {
-            return score;
-        }
-        public void EndGame(bool gameHasEnded)
-        {
-            failLevelUI.SetActive(true);
-            bossMusic.Stop();
-            deathMusic.Play();
-            Debug.Log("Game Over!");
-            SceneManager.LoadScene(8);
-
-        }
+        score = 0;
     }
 
+    public void ManDied()
+    {
+        score = score + 1;
+    }
 
+    public int ReturnScore()
+    {
+        return score;
+    }
+
+    public void EndGame(bool gameHasEnded)
+    {
+        failLevelUI.SetActive(true);
+        bossMusic.Stop();
+        deathMusic.Play();
+        Debug.Log("Game Over!");
+        SceneManager.LoadScene(8);
+    }
 }

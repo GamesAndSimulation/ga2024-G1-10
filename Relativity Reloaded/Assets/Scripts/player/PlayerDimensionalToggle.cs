@@ -1,3 +1,4 @@
+using System.Collections;
 using dimensions;
 
 namespace Project.Internal.Scripts.Enemies.player
@@ -13,6 +14,7 @@ namespace Project.Internal.Scripts.Enemies.player
         private bool _isSkyboxToggled = false; // Track whether the skybox is toggled or not
         private PlayerStats playerStats; // Reference to the PlayerStats component
         private DimensionZone dimensionZone; // Reference to the RestrictedZone component
+        public ParticleSystem particleSystem; // Reference to the Particle System
 
         void Start()
         {
@@ -42,12 +44,19 @@ namespace Project.Internal.Scripts.Enemies.player
             HandleDimensionalToggle();
         }
 
+        private IEnumerator PlayParticleSystemForDuration(float duration)
+        {
+            particleSystem.Play();
+            yield return new WaitForSeconds(duration);
+            particleSystem.Stop();
+        }
         private void HandleDimensionalToggle()
         {
             if (Input.GetKeyDown(toggleKey) && playerStats != null && playerStats.HasDimensionSwitch && (dimensionZone == null || !dimensionZone.IsPlayerInside(transform.position)))
             {
                 DimensionalObjectManager.Instance.ToggleDimensionalObjects();
                 ToggleSkybox();
+                StartCoroutine(PlayParticleSystemForDuration(1.0f)); // Play for 1 second
             }
         }
 
