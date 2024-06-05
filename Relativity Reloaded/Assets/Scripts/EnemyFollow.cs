@@ -24,6 +24,11 @@ public class EnemyFollow : MonoBehaviour
     public float stopRange = 7f;
     private int health = 3;
 
+    public AudioSource bossDeathSound;
+    public AudioSource bossDamageSound;
+    public AudioSource bossGiantSound;
+    public AudioSource bossLiteSound;
+
     private enum Phase { Phase1, Phase2, Phase3 }
     private Phase currentPhase;
 
@@ -74,7 +79,7 @@ public class EnemyFollow : MonoBehaviour
         while (currentPhase == Phase.Phase1 && isAttacking)
         {
             ShootBullet();
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.5f);
         }
         isAttacking = false;
     }
@@ -116,13 +121,14 @@ public class EnemyFollow : MonoBehaviour
 
     void ShootBullet()
     {
-        Vector3 spawnPosition = transform.position + transform.forward * 2f + transform.up * 3f; // Spawn in front of the enemy
+        Vector3 spawnPosition = transform.position + transform.forward * 2f + transform.up * 2f; // Spawn in front of the enemy
         GameObject bullet = Instantiate(bulletPrefab, spawnPosition, transform.rotation);
         Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
         Vector3 shootDirection = (player.position - spawnPosition).normalized;
         bulletRb.velocity = shootDirection * 10f; // Adjust bullet speed as needed
         bulletRb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-        bulletRb.AddForce(transform.up * 8f, ForceMode.Impulse);
+        bossLiteSound.Play();
+        //bulletRb.AddForce(transform.up * 8f, ForceMode.Impulse);
     }
 
     IEnumerator Phase2Routine()
@@ -150,6 +156,8 @@ public class EnemyFollow : MonoBehaviour
         Rigidbody bulletRb = giantBullet.GetComponent<Rigidbody>();
         Vector3 shootDirection = (player.position - spawnPosition).normalized;
         bulletRb.velocity = shootDirection * 5f; // Adjust giant bullet speed as needed
+        bossGiantSound.Play();
+
     }
 
     IEnumerator Phase3Routine()
@@ -194,9 +202,11 @@ public class EnemyFollow : MonoBehaviour
                 {
                     StartCoroutine(PlayParticleSystemForDuration(0.25f));
                     health -= 1;
+                    bossDamageSound.Play();
                     if (health <= 0)
                     {
                         _animator.SetBool(Die, true);
+                        bossDeathSound.Play();
                         StartCoroutine(FinalSceneLoad(2.0f));
                     }
                 }

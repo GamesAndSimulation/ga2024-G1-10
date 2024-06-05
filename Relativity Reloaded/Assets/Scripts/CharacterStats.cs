@@ -8,6 +8,7 @@ public class CharacterStats : MonoBehaviour
     [SerializeField] protected int maxHealth;
     [SerializeField] protected bool isDead;
     public GameManager gameManager;
+    public GameManagerChaos gameManagerChaos;
     public AudioSource damageSound;
 
 
@@ -20,6 +21,11 @@ public class CharacterStats : MonoBehaviour
             if (gameManager != null)
             {
                 gameManager.EndGame(isDead);
+            }
+
+            if (gameManagerChaos != null)
+            {
+                gameManagerChaos.EndGame(isDead);
             }
         }
 

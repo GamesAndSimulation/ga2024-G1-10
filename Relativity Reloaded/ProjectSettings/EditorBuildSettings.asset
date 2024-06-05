@@ -23,5 +23,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TheEnd.unity
     guid: fe9be9c322be1fa468644b39edc76423
+  - enabled: 1
+    path: Assets/Scenes/ChaosIntro.unity
+    guid: a68a031df1f18634eb8b7f51eb5eb37e
+  - enabled: 1
+    path: Assets/Project/Internal/Scenes/ChaosMode.unity
+    guid: 959fb471458938e4fb814ab138f749eb
+  - enabled: 1
+    path: Assets/Scenes/ChaosOutro.unity
+    guid: 069c9c8ce39b9ca468a26a8aa96999af
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7, type: 2}
