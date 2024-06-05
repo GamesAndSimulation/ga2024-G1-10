@@ -10,6 +10,7 @@ namespace Project.Internal.Scripts.Enemies.player
 
         private bool _isSkyboxToggled = false; // Track whether the skybox is toggled or not
         private PlayerStats playerStats; // Reference to the PlayerStats component
+        private DimensionZone dimensionZone; // Reference to the RestrictedZone component
 
         void Start()
         {
@@ -25,6 +26,13 @@ namespace Project.Internal.Scripts.Enemies.player
             {
                 Debug.LogError("PlayerStats component not found on the player.");
             }
+
+            // Find the RestrictedZone component
+            dimensionZone = FindObjectOfType<DimensionZone>();
+            if (dimensionZone == null)
+            {
+                Debug.LogError("RestrictedZone component not found in the scene.");
+            }
         }
 
         void Update()
@@ -34,7 +42,7 @@ namespace Project.Internal.Scripts.Enemies.player
 
         private void HandleDimensionalToggle()
         {
-            if (Input.GetKeyDown(toggleKey) && playerStats != null && playerStats.HasDimensionSwitch)
+            if (Input.GetKeyDown(toggleKey) && playerStats != null && playerStats.HasDimensionSwitch && (dimensionZone == null || !dimensionZone.IsPlayerInside(transform.position)))
             {
                 DimensionalObjectManager.Instance.ToggleDimensionalObjects();
                 ToggleSkybox();
