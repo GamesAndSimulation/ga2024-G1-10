@@ -4,6 +4,7 @@ public class LakeFreezer : MonoBehaviour
 {
     public Material originalMaterial; // Reference to the lake's original material
     public Material frozenMaterial; // Reference to the lake's frozen material
+    public GameObject waterInvisibleWall; // Reference to the waterInvisibleWall GameObject
     private bool isFrozen = false; // Track whether the lake is frozen or not
 
     private LowPolyWater.LowPolyWater waterMovementScript; // Reference to the LowPolyWater script
@@ -39,6 +40,11 @@ public class LakeFreezer : MonoBehaviour
         {
             Debug.LogError("PlayerStats component not found in the player GameObject.");
         }
+
+        if (waterInvisibleWall == null)
+        {
+            Debug.LogError("WaterInvisibleWall GameObject not assigned.");
+        }
     }
 
     // Update is called once per frame
@@ -46,13 +52,17 @@ public class LakeFreezer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if (playerStats != null && playerStats.HasAllCoins() && !isFrozen)
+            if (playerStats != null && playerStats.hasFreezePower && !isFrozen)
             {
+                Debug.Log("Freezing the lake...");
                 FreezeLake();
             }
             else if (isFrozen)
             {
                 UnfreezeLake();
+            } else if (!playerStats.hasFreezePower)
+            {
+                Debug.Log("Cannot freeze the lake. Collect all coins first.");
             }
         }
     }
@@ -72,8 +82,14 @@ public class LakeFreezer : MonoBehaviour
             waterMovementScript.enabled = false;
         }
 
+        // Deactivate the waterInvisibleWall
+        if (waterInvisibleWall != null)
+        {
+            waterInvisibleWall.SetActive(false);
+        }
+
         isFrozen = true;
-        Debug.Log("Lake frozen");
+        Debug.Log("Lake frozen and waterInvisibleWall deactivated");
     }
 
     // Method to unfreeze the lake
@@ -91,7 +107,13 @@ public class LakeFreezer : MonoBehaviour
             waterMovementScript.enabled = true;
         }
 
+        // Activate the waterInvisibleWall
+        if (waterInvisibleWall != null)
+        {
+            waterInvisibleWall.SetActive(true);
+        }
+
         isFrozen = false;
-        Debug.Log("Lake unfrozen");
+        Debug.Log("Lake unfrozen and waterInvisibleWall activated");
     }
 }
