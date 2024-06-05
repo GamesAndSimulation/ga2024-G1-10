@@ -9,6 +9,10 @@ TagManager:
   - Enemy
   - Dimensional
   - NoSpawn
+  - Bullet
+  - Collider
+  - Boss
+  - HeadShot
   layers:
   - Default
   - TransparentFX

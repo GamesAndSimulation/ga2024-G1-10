@@ -191,7 +191,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
             _rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            animator.SetBool(Jump, true);
+            //animator.SetBool(Jump, true);
 
         }
     }
@@ -265,8 +265,6 @@ public class PlayerMovement : MonoBehaviour
             camera1.gameObject.SetActive(true);
             camera2.gameObject.SetActive(false);
         }
-
-        Debug.Log($"Aiming status: {_isAiming}");
     }
 
     private void HandleTerrainManipulation()

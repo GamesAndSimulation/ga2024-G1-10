@@ -1,6 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class GiantBulletCode : MonoBehaviour
 {
     public float lifetime = 5f; // Lifetime of the bullet in seconds
 
@@ -11,22 +13,12 @@ public class Bullet : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        // Handle bullet collision here
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            var enemyStats = collision.gameObject.GetComponent<EnemyStats>();
-            if (enemyStats != null)
-            {
-                enemyStats.TakeDamage(1);
-            }
-        }
-
         if (collision.gameObject.CompareTag("Player"))
         {
             var pStats = collision.gameObject.GetComponent<PlayerStats>();
             if (pStats != null)
             {
-                pStats.TakeDamage(1);
+                pStats.TakeDamage(3);
             }
         }
 

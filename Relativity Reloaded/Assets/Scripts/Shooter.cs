@@ -15,23 +15,12 @@ public class Shooter : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && playerMovement.IsAiming())
         {
-            Debug.Log("Player can shoot. Calling Shoot()");
             Shoot();
-        }
-        else if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log($"Player cannot shoot. Aiming: {playerMovement.IsAiming()}");
         }
     }
 
     void Shoot()
     {
-        if (bulletPrefab == null)
-        {
-            Debug.LogError("Bullet prefab is not assigned.");
-            return;
-        }
-
         Vector3 spawnPosition = playerTransform.position + playerTransform.TransformDirection(shootOffset);
         GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
@@ -45,7 +34,5 @@ public class Shooter : MonoBehaviour
         Vector3 shootDirection = playerCamera.transform.forward;
         rb.velocity = shootDirection * bulletSpeed;
         shootMusic.Play();
-
-        Debug.Log($"Bullet instantiated at {spawnPosition} with velocity {rb.velocity}");
     }
 }
